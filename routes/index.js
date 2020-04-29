@@ -4,7 +4,7 @@ const db = require('../db/index');
 
 /* GET home page. */
 router.get('/', function(request, response, next) {
-  response.render('index', { title: 'Testy test test' });
+  response.render('index', { title: 'Scrabble' });
 });
 
 router.get('/test', function (request, response, next) {
