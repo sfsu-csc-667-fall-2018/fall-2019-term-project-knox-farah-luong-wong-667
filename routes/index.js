@@ -7,13 +7,7 @@ router.get('/', function(request, response, next) {
   response.render('index', { title: 'Scrabble' });
 });
 
-router.get('/test', function (request, response, next) {
-    db.query(`INSERT INTO test_table ("testString") VALUES ('Hello at ${Date.now()}')`)
-    .then( _ => db.query(`SELECT * FROM test_table`) )
-    .then( results => response.json( results ) )
-    .catch( error => {
-        console.log( error )
-    })
+router.get('/junk', function(request, response, next) {
 });
 
 module.exports = router;
