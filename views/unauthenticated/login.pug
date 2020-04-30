@@ -4,5 +4,26 @@ block content
   h1= title
   p Welcomes to #{title}
 
+  form(action="/login" method="POST")
+    div
+      label Email
+      input(
+        type= 'email'
+        id= 'email'
+        name= 'email'
+        placeholder= 'Enter an email'
+      )
+    div
+      label Password
+      input(
+        type = 'password'
+        id= 'password'
+        name= 'password'
+        placeholder= 'Enter a password'
+      )
+    button(
+      type= 'submit'
+    ) Submit
   a(href = "/users/register") Register
-
+  br
+  a(href = "/") Home
