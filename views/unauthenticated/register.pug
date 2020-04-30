@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  h1= title
+  p Welcomes to #{title}
+
+  form(action="/register" method="POST")
+    div
+      label Name
+      input(
+        type= 'text'
+        id= 'name'
+        name= 'name'
+        placeholder= 'Enter a name'
+      )
+    div
+      label Email
+      input(
+        type= 'email'
+        id= 'email'
+        name= 'email'
+        placeholder= 'Enter an email'
+      )
+    div
+      label Password
+      input(
+        type = 'password'
+        id= 'password'
+        name= 'password'
+        placeholder= 'Enter a password'
+      )
+    button(
+      type= 'submit'
+    ) Submit
+
+  a(href = "/users/login") Login
+  br
+  a(href = "/") Home
+
