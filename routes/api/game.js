@@ -33,8 +33,6 @@ router.get('/:id', (request, response) => {
     const { id } = request.params;
     response.render('game', { id, title:'Game '+id});
   });
-    
-
   
-  module.exports = router;
+module.exports = router;
   

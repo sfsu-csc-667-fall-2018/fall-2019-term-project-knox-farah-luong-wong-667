@@ -9,6 +9,7 @@ const usersRouter = require("./routes/users");
 const testsRouter = require("./routes/tests");
 const gamesRouter = require("./routes/games");
 const gameApiRouter = require("./routes/api/game");
+const userApiRouter = require("./routes/api/user");
 const lobbyRouter = require("./routes/lobby");
 
 if (process.env.NODE_ENV === "development") {
@@ -32,7 +33,8 @@ app.use("/users", usersRouter);
 app.use("/tests", testsRouter);
 app.use("/games", gamesRouter);
 app.use("/lobby", lobbyRouter);
-app.use("/game/api", gameApiRouter);
+app.use("/api/game", gameApiRouter);
+app.use("/api/user", userApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
