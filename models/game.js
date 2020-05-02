@@ -2,11 +2,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Game = sequelize.define('Game', {
     hostUid: DataTypes.INTEGER,
-    guestUid: DataTypes.INTEGER,
-    createdAt: DataTypes.DATE
+    guestUid: DataTypes.INTEGER
   }, {});
-  User.associate = function(models) {
+  Game.associate = function(models) {
     // associations can be defined here
   };
-  return User;
+  return Game;
 };
