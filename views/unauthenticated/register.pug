@@ -1,39 +1,19 @@
 extends layout
 
 block content
-  h1= title
-  p Welcomes to #{title}
-
-  form(action="/register" method="POST")
-    div
-      label Name
-      input(
-        type= 'text'
-        id= 'name'
-        name= 'name'
-        placeholder= 'Enter a name'
-      )
-    div
-      label Email
-      input(
-        type= 'email'
-        id= 'email'
-        name= 'email'
-        placeholder= 'Enter an email'
-      )
-    div
-      label Password
-      input(
-        type = 'password'
-        id= 'password'
-        name= 'password'
-        placeholder= 'Enter a password'
-      )
-    button(
-      type= 'submit'
-    ) Submit
-
-  a(href = "/users/login") Login
-  br
-  a(href = "/") Home
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 Register
+        form(method='POST' action='/api/user/create')
+          div.form-group
+            label(for='email') Email
+            input.form-control(type='text' id='email' placeholder='email' name='emailsignup')
+          div.form-group
+            label(for='password') Password
+            input.form-control(type='password' id='password' placeholder='password' name='passwordsignup')
+          div.form-group
+            label(for='username') Username
+            input.form-control(type='username' id='username' placeholder='username' name='usernamesignup')
+          button.btn.btn-primary(type='submit') Log in
 
