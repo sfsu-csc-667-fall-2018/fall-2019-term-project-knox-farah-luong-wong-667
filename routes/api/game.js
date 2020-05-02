@@ -45,53 +45,6 @@ router.get('/getGames',(request,response,next) => {
 });
 
 
-
-// router.get("/createUser", function (request, response, next) {
-//   db.authenticate()
-//     .then(() => console.log('Database connected...'))
-//     .then(function() {
-//       User.create({
-//         email: 'test01@gmail.com',
-//         password: 'password',
-//         username: 'cool_username'
-//       })
-//     })
-//     .then(User.findAll())
-//     .then((results) => response.json(results))
-//     .catch(err => console.log('Error: ' + err))
-// });
-
-
-// router.get("/gamelist", (request, response) => {
-//   db.any(`SELECT * FROM Games`)
-//   .then( results => response.json( results ) )
-//   .catch( error => {
-//     console.log( error )
-//     response.json({ error })
-//   })
-// });
-
-// router.get("/users", (request, response) => {
-//   db.any(`SELECT * FROM users`)
-//   .then( results => response.json( results ) )
-//   .catch( error => {
-//     console.log( error )
-//     response.json({ error })
-//   })
-// });
-
-// //still need to get this to work 
-// //emulates a game being created
-//  router.get("/testcreates", (request, response) => {
-//    db.any(`SELECT * FROM User`)
-//    .then(results => response.json( results ))
-//    .then(`INSERT INTO games ("hostUid", "guestUid") VALUES ("1", "2")`)
-//    .catch( error => {
-//        console.log( error )
-//        response.json({ error })
-//     })
-//  });
-
 router.get('/:id', (request, response) => {
     const { id } = request.params;
     response.render('game', { id, title:'Game '+id});
