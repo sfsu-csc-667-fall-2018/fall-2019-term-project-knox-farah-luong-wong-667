@@ -9,7 +9,6 @@ const User = UserModel(db, Sequelize);
 const GlobalMessageModel = require("../../models/globalmessage")
 const GlobalMessage = GlobalMessageModel(db, Sequelize);
 
-//test user id = "f25e39d2-5b92-474a-ab0c-2ded5cb84a9e", obtained through getUsers
 
   router.get("/getUsers", function (request, response, next) {
       User.findAll()
