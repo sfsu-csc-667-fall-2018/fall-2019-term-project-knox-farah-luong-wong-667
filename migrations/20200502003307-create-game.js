@@ -4,27 +4,9 @@ module.exports = {
     return queryInterface.createTable('Games', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      hostUid: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: {
-            tableName: 'Users',
-          }
-        }
-      },
-      guestUid: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: {
-            tableName: 'Users',
-          }
-        }
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       createdAt: {
         allowNull: false,
