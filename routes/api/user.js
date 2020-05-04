@@ -38,8 +38,8 @@ const GlobalMessage = GlobalMessageModel(db, Sequelize);
   })
 });
 
-  router.post("/test/createbulk/:uid", (request, response, next) => {
-      const { uid } = request.params;
+  router.post("/test/createbulk/", (request, response, next) => {
+    const { uid } = request.body.uid;
     GlobalMessage.bulkCreate([
         {body: 'Body of message 1',  UserId: uid},
         {body: 'Body of message 2',  UserId: uid},
