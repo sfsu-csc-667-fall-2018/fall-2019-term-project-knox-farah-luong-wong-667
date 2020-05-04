@@ -1,19 +1,24 @@
 extends layout
 
 block content
-  .main.container
-    .row
-      .col-md-6.col-md-offset-3
-        h1.display-4.m-b-2 Register
-        form(method='POST' action='/api/user/create')
-          div.form-group
-            label(for='email') Email
-            input.form-control(type='text' id='email' placeholder='email' name='emailsignup')
-          div.form-group
-            label(for='password') Password
-            input.form-control(type='password' id='password' placeholder='password' name='passwordsignup')
-          div.form-group
-            label(for='username') Username
-            input.form-control(type='username' id='username' placeholder='username' name='usernamesignup')
-          button.btn.btn-primary(type='submit') Sign in
+  #register
+    h3.text-center.text-white.pt-5 Register Here
+    .container
+      #register-row.row.justify-content-center.align-items-center
+         #register-column.col-md-6
+          #register-box.col-md-12
+             
+              form(method='POST' action='/api/user/create')
+                br
+                br
+                div.form-group
+                  label(for='email') Email
+                  input.form-control(type='text' id='email' placeholder='email' name='emailsignup')
+                div.form-group
+                  label(for='password') Password
+                  input.form-control(type='password' id='password' placeholder='password' name='passwordsignup')
+                div.form-group
+                  label(for='username') Username
+                  input.form-control(type='username' id='username' placeholder='username' name='usernamesignup')
+                button.w-100.btn.btn-success(type='submit') Register
 
