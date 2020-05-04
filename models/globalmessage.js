@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    body: DataTypes.TEXT
+    body: DataTypes.TEXT,
+    UserId: {
+      type: DataTypes.UUID
+    }
   }, {});
   GlobalMessage.associate = function(models) {
     // associations can be defined here
