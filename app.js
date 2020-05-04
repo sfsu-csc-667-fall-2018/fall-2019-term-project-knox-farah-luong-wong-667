@@ -11,6 +11,7 @@ const testsRouter = require("./routes/tests");
 const gamesRouter = require("./routes/games");
 const gameApiRouter = require("./routes/api/game");
 const userApiRouter = require("./routes/api/user");
+const globalMessageApiRouter = require("./routes/api/global-message");
 const lobbyRouter = require("./routes/lobby");
 
 if (process.env.NODE_ENV === "development") {
@@ -18,7 +19,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const app = express();
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -42,6 +42,7 @@ app.use("/games", gamesRouter);
 app.use("/lobby", lobbyRouter);
 app.use("/api/game", gameApiRouter);
 app.use("/api/user", userApiRouter);
+app.use("/api/global-message", globalMessageApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
