@@ -1,9 +1,8 @@
-const Sequelize = require("sequelize");
 const express = require("express");
 const router = express.Router();
-const db = require("../../db/index");
-const GlobalMessageModel = require("../../models/globalmessage")
-const GlobalMessage = GlobalMessageModel(db, Sequelize);
+const models = require("../../models/associations");
+const GlobalMessage = models["GlobalMessage"];
+const User = models["User"];
 
 router.get("/get/", (request, response, next) => {
     const { uid } = request.body.uid;
@@ -17,6 +16,21 @@ router.get("/get/", (request, response, next) => {
         response.json(err)
     })
 });
+
+router.get("/getone/", (request, response, next) => {
+    const { uid } = request.body.uid;
+    GlobalMessage.findOne({
+        where: {
+          UserId: 'fc611516-a549-476c-b8b5-f16cd70d0b98'
+        },
+        include: {
+            model: User
+        }
+    })
+    .then((result) => {
+        response.json(result)
+    })
+})
 
 router.post("/create/", (request, response, next) => {
     GlobalMessage.create({
@@ -34,7 +48,11 @@ router.post("/create/", (request, response, next) => {
 })
 
 router.get("/getMessages", function (request, response, next) {
-    GlobalMessage.findAll()
+    GlobalMessage.findAll({
+        include: {
+            model: User
+        }
+    })
     .then((results) => {
         response.json(results)
     })

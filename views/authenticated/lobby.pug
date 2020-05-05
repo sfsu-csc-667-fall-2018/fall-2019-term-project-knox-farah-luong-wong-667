@@ -2,7 +2,13 @@ extends layout
 
 block content
   h1= title
-  p Welcomes to #{title}
+  p Welcome to the #{title}
+
+  for result in messages
+    div
+      b #{result.User.username}
+      div
+        p #{result.body}
  
   a(href = "/games") Games
 

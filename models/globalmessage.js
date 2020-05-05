@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const GlobalMessage = sequelize.define('GlobalMessage', {
     id: {
@@ -12,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     }
   }, {});
+
   GlobalMessage.associate = function(models) {
     // associations can be defined here
     GlobalMessage.belongsTo(models.User);

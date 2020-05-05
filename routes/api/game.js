@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../db/index');
-
-const GameModel = require("../../models/game");
-const Sequelize = require("sequelize");
-const Game = GameModel(db, Sequelize);
+const models = require("../../models/associations")
+const Game = models["Game"];
 
 router.get('/', (request, response, next) => {
   response.render('game', { title: 'Gamepage' });

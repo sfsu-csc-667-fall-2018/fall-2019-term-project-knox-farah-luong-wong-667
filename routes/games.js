@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../db/index");
+const models = require("../models/associations");
+const User = models["User"];
 
 // Needs work/discuss this
 router.get("/", (request, response, next) => {
