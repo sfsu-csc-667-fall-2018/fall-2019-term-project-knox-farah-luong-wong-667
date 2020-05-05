@@ -5,32 +5,20 @@ const GlobalMessage = models["GlobalMessage"];
 const User = models["User"];
 
 router.get("/get/", (request, response, next) => {
-    const { uid } = request.body.uid;
     GlobalMessage.findAll({
-        where: { UserId: uid }
+        where: { UserId: request.body.uid },
+        include: {
+            model: User
+        }
     })
     .then((results) =>{
+        console.log(results)
         response.json(results)
     })
     .catch((err)=>{
         response.json(err)
     })
 });
-
-router.get("/getone/", (request, response, next) => {
-    const { uid } = request.body.uid;
-    GlobalMessage.findOne({
-        where: {
-          UserId: 'fc611516-a549-476c-b8b5-f16cd70d0b98'
-        },
-        include: {
-            model: User
-        }
-    })
-    .then((result) => {
-        response.json(result)
-    })
-})
 
 router.post("/create/", (request, response, next) => {
     GlobalMessage.create({

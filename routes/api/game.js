@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../../db/index');
 const models = require("../../models/associations")
 const Game = models["Game"];
+const User = models["User"];
 
 router.get('/', (request, response, next) => {
   response.render('game', { title: 'Gamepage' });
@@ -63,20 +64,29 @@ router.post("/createbulk/:hUid", (request, response, next) => {
 })
 });
 
-//shows all games
-router.get('/getAll',(request,response,next) => {
-  db.authenticate()
-    .then(() => console.log('Database connected...'))
-    .then(_=>Game.findAll())
-    .then((results) => response.json(results))
-    .catch(
-      error => { 
-        console.log(error)
-        response.json({ error })
-      }
-    )
-});
+router.get('/getAll', (request, response, next) => {
+  Game.findAll({
+    include: {
+      model: User
+    }
+  })
+  .then((results) => {
+    response.json(results)
+  })
+  .catch((err) => {
+    response.send(err)
+  })
+})
 
+router.post('/create', (request, response, next) => {
+  Game.create({
+    hostUid: '37223e48-3075-4242-ab4f-d26b11ece3b1',
+    guestUid: '7dbe973d-3605-435f-bdbf-0ca76de33c80'
+  })
+  .then((results) => {
+    response.json(results)
+  })
+})
 
 router.get('/:id', (request, response) => {
     const { id } = request.params;

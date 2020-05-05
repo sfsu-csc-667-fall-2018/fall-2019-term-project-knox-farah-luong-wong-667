@@ -12,6 +12,7 @@ router.get("/", (request, response, next) => {
     }
   })
   .then((results) => {
+    console.log(results)
     response.render("authenticated/lobby", { title: "lobby page", messages: results })
   })
 });

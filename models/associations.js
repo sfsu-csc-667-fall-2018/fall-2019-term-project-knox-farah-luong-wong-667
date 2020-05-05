@@ -10,8 +10,13 @@ const Game = GameModel(db, Sequelize);
 //Add Associations here
 GlobalMessage.belongsTo(User);
 User.hasMany(GlobalMessage);
-User.hasMany(Game);
-Game.belongsTo(User);
+User.hasMany(Game, {
+    foreignKey: 'hostUid'
+});
+Game.belongsTo(User, {
+    foreignKey: 'hostUid'
+});
+
 var container = [];
 container['GlobalMessage'] = GlobalMessage
 container['User'] = User

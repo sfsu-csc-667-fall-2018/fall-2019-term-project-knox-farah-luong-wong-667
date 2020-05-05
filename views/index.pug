@@ -1,18 +1,21 @@
 extends layout
 
 block content
-  h1 Home Page
-  title=title
+  if username != undefined
+    h1 Welcome, #{username}
+    title=title
+  else
+    h1 Welcome! Please sign in.
+    title = title
 
   ul
     li
       a(href="users/login") Login
     li
       a(href="users/register") Register
-    li
-      a(href="/lobby") Lobby Page
-    li
-      a(href="/games") Games Page
+    if username != undefined
+      li
+        a(href="/lobby") Lobby Page
+      li
+        a(href="/games") Games Page
   
-  
-
