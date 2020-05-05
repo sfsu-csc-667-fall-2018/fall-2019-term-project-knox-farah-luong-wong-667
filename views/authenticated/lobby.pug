@@ -4,11 +4,16 @@ block content
   h1= title
   p Welcome to the #{title}
 
-  for result in messages
-    div
-      b #{result.User.username}
+  div#row.justify-content-end
+    for result in messages
       div
-        p #{result.body}
+        b #{result.User.username}
+        div
+          p #{result.body}
+  div
+    form(method='POST' action='/api/global-message/create')
+        label(for='messageBody') Message Body
+        input(type='text' id='messageBody' placeholder='messageBody' name='messageBody')
+        button(type='submit') Send
  
   a(href = "/games") Games
-

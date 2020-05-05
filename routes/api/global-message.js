@@ -34,12 +34,13 @@ router.get("/getone/", (request, response, next) => {
 
 router.post("/create/", (request, response, next) => {
     GlobalMessage.create({
-        UserId: request.body.uid,
+        UserId: request.session.uid,
         body: request.body.messageBody
     })
     .then(function(data) {
         if(data) {
-            response.json(data);
+            console.log(data);
+            response.redirect('/lobby');
         }
     })
     .catch((err) => {
