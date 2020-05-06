@@ -4,67 +4,74 @@ const db = require('../../db/index');
 const models = require("../../models/associations")
 const Game = models["Game"];
 const User = models["User"];
+const UserGame = models["UserGame"];
 
 router.get('/', (request, response, next) => {
   response.render('game', { title: 'Gamepage' });
 });
+
+
+// router.get('/join', (request, response, next) => {
+//   Game.findAll({
+//     where:{
+//       id: request.body.gid,
+//     }
+//   })
+//    .then((result)=>{
+//       response.json(result)
+//    })
+// });
+
+
+//create a game, requires user to be logged in
+router.post('/create',(request, response, next) =>{
+  Game.create()
+  .then((newgame)=>UserGame.create({
+    UserId: request.session.uid,
+    GameId: newgame.id
+  }))
+  .then((result)=>{
+    response.json(result)
+  })
+});
   
-
-//test: creates a game with two pre-determined Uids.
-router.post('/test/create', (request,response,next)=>{
-  Game.create({
-    hostUid: "4e576e8b-da82-48d9-af72-3d3310f6518b",
-    guestUid: "b4631842-ed7e-4a90-a7bf-93e6e95a479c",
+//returns  user's games
+router.get('/mygames', (request, response, next) =>{
+  UserGame.findAll({
+    where: {
+      UserId: request.session.uid,
+    },
   })
-  .then((result) => {
-    response.json(result)
-  })
-});
-
-//creates a game with only host
-//format: ../api/game/create/some host id
-router.post('/create/:hUid/', (request,response,next)=>{
-  const { hUid } = request.params;
-  Game.create({
-    hostUid: hUid,
-  })
-  .then((result) => {
-    response.json(result)
-  })
-});
-
-//creates a game with host and guest
-//format: ../api/game/create/some host id/some guest id
-router.post('/create/:hUid/:gUid', (request,response,next)=>{
-  const { hUid } = request.params;    
-  const { gUid } = request.params;
-  Game.create({
-    hostUid: hUid,
-    guestUid: gUid,
-  })
-  .then((result) => {
-    response.json(result)
-  })
-});
-
-//creates multiple games with only host 
-//format: ../api/game/createbulk/some host id/
-router.post("/createbulk/:hUid", (request, response, next) => {
-  const { hUid } = request.params;
-  Game.bulkCreate([
-    { hostUid: hUid},
-    { hostUid: hUid},
-    { hostUid: hUid},
-])
-.then((results) =>{
+  .then((results) => {
     response.json(results)
+  })
+  .catch((err) => {
+    response.send(err)
+  })
 })
-.catch((err)=>{
-    response.json(err)
-})
+
+
+router.get('/gamelist',(request, response, next) =>{
+  UserGame.findAll()
+  .then((result)=>{
+    response.json(result)
+  })
 });
 
-router.get('/getAll', (request, response, next) => {
+
+router.post('/test/create',(request, response, next) =>{
+  Game.create()
+  .then((newgame)=>UserGame.create({
+    UserId: request.body.uid,
+    GameId: newgame.id
+  }))
+  .then((result)=>{
+    response.json(result)
+  })
+});
+
+
+router.get('/test/get/games', (request, response, next) => {
   Game.findAll({
     include: {
       model: User
@@ -78,21 +85,16 @@ router.get('/getAll', (request, response, next) => {
   })
 })
 
-router.post('/create', (request, response, next) => {
-  Game.create({
-    hostUid: '37223e48-3075-4242-ab4f-d26b11ece3b1',
-    guestUid: '7dbe973d-3605-435f-bdbf-0ca76de33c80'
+//removes all the games from game table
+router.post('/clearall',(request,response,next) => {
+  Game.destroy({
+    where: {}
   })
-  .then((results) => {
-    response.json(results)
-  })
-})
-
-router.get('/:id', (request, response) => {
-    const { id } = request.params;
-    response.render('game', { id, title:'Game '+id});
+  .then(function () {})
+  .then((result)=>{
+    response.json(result)
   });
+})
     
-
   module.exports = router;
   

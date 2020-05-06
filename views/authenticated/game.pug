@@ -2,5 +2,14 @@ extends layout
 
 block content
   h1= title
-  p Welcomes to the game page #{title}
+  p Welcomes to the game page, #{username}
 
+  div 
+    form(method='POST' action='/api/game/create')
+      button(type='submit') Create a Game
+
+  div 
+    form(method='GET' action='/api/game/mygames')
+      button(type='submit') Show My Games
+
+  a(href = "/") Home
