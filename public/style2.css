@@ -7,15 +7,24 @@ body {
 }
 
 #lobby .container #lobby-row #lobby-column #lobby-box {
-  margin-top: 10px;
+  margin-top: 5px;
   max-width: 600px;
-  height: 50%;
   border: 1px solid #9C9C9C;
   background-color: #EAEAEA;
 }
-#lobby .container #lobby-row #lobby-column #lobby-box #lobby-form {
-  padding: 20px;
+
+#lobby .container #lobby-row #lobby-column #lobby-box #lobby-box-scroll{
+  max-height: 600px;
+  overflow-y: auto;
+  transform:rotateX(180deg);
+                -moz-transform:rotateX(180deg); /* Mozilla */
+                -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+                -ms-transform:rotateX(180deg); /* IE 9+ */
+                -o-transform:rotateX(180deg); /* Opera */
+transform:rotateX(180deg);
+                -moz-transform:rotateX(180deg); /* Mozilla */
+                -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+                -ms-transform:rotateX(180deg); /* IE 9+ */
+                -o-transform:rotateX(180deg); /* Opera */
 }
-#lobby .container #lobby-row #lobby-column #lobby-box #lobby-form #lobby-link {
-  margin-top: -85px;
-}
+

@@ -7,20 +7,21 @@ block content
       #lobby-row.row.justify-content-center.align-items-center
           #lobby-column.col-md-6
             #lobby-box.col-md-12
-                p Welcome 
+              #lobby-box-scroll
+                  p Welcome 
 
-                div#row.justify-content-end
-                  for result in messages
-                    div
-                      if result.User != null
-                        b #{result.User.username}
-                        div
-                          p #{result.body}
-                div
-                  form(method='POST' action='/api/global-message/create')
-                      //- label(for='messageBody') Message Body
-                      input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
-                      br
-                      button.w-100.btn.btn-success(type='submit') Submit
+                  div#row.justify-content-end
+                    for result in messages
+                      div
+                        if result.User != null
+                          b #{result.User.username}
+                          div
+                            p #{result.body}
+            div
+              form(method='POST' action='/api/global-message/create')
+                  //- label(for='messageBody') Message Body
+                  input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
+                  br
+                  button.w-100.btn.btn-success(type='submit') Submit
               
           //- a(href = "/games") Games
