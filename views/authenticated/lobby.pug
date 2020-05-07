@@ -1,20 +1,26 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to the #{title}
+  #lobby
+    h3.text-center.text-white.pt-5 Lobby Chat
+    .container
+      #lobby-row.row.justify-content-center.align-items-center
+          #lobby-column.col-md-6
+            #lobby-box.col-md-12
+                p Welcome 
 
-  div#row.justify-content-end
-    for result in messages
-      div
-        if result.User != null
-          b #{result.User.username}
-          div
-            p #{result.body}
-  div
-    form(method='POST' action='/api/global-message/create')
-        label(for='messageBody') Message Body
-        input(type='text' id='messageBody' placeholder='messageBody' name='messageBody')
-        button(type='submit') Send
- 
-  a(href = "/games") Games
+                div#row.justify-content-end
+                  for result in messages
+                    div
+                      if result.User != null
+                        b #{result.User.username}
+                        div
+                          p #{result.body}
+                div
+                  form(method='POST' action='/api/global-message/create')
+                      //- label(for='messageBody') Message Body
+                      input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
+                      br
+                      button.w-100.btn.btn-success(type='submit') Submit
+              
+          //- a(href = "/games") Games

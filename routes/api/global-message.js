@@ -11,13 +11,13 @@ router.get("/get/", (request, response, next) => {
             model: User
         }
     })
-    .then((results) =>{
-        console.log(results)
-        response.json(results)
-    })
-    .catch((err)=>{
-        response.json(err)
-    })
+        .then((results) => {
+            console.log(results)
+            response.json(results)
+        })
+        .catch((err) => {
+            response.json(err)
+        })
 });
 
 router.post("/create/", (request, response, next) => {
@@ -25,15 +25,15 @@ router.post("/create/", (request, response, next) => {
         UserId: request.session.uid,
         body: request.body.messageBody
     })
-    .then(function(data) {
-        if(data) {
-            console.log(data);
-            response.redirect('/lobby');
-        }
-    })
-    .catch((err) => {
-        response.send("Error: ", err)
-    })
+        .then(function (data) {
+            if (data) {
+                console.log(data);
+                response.redirect('/lobby');
+            }
+        })
+        .catch((err) => {
+            response.send("Error: ", err)
+        })
 })
 
 router.get("/getMessages", function (request, response, next) {
@@ -42,9 +42,9 @@ router.get("/getMessages", function (request, response, next) {
             model: User
         }
     })
-    .then((results) => {
-        response.json(results)
-    })
+        .then((results) => {
+            response.json(results)
+        })
 })
 
 module.exports = router;
