@@ -11,17 +11,19 @@ router.get('/', (request, response, next) => {
 });
 
 
-// router.get('/join', (request, response, next) => {
-//   Game.findAll({
-//     where:{
-//       id: request.body.gid,
-//     }
-//   })
-//    .then((result)=>{
-//       response.json(result)
-//    })
-// });
-
+router.post('/join', (request, response, next) => {
+  UserGame.findOrCreate({
+    where:{
+      GameId: request.body.gid,
+      UserId: request.body.uid,
+    }
+  })
+  .then((results)=>{
+    console.log(results),
+    response.json(results)
+  })
+  .catch((err) => response.json(err))
+});
 
 //create a game, requires user to be logged in
 router.post('/create',(request, response, next) =>{
@@ -48,42 +50,18 @@ router.get('/mygames', (request, response, next) =>{
   .catch((err) => {
     response.send(err)
   })
-})
+});
 
-
+//returns all games, with user info.
 router.get('/gamelist',(request, response, next) =>{
-  UserGame.findAll()
-  .then((result)=>{
-    response.json(result)
-  })
-});
-
-
-router.post('/test/create',(request, response, next) =>{
-  Game.create()
-  .then((newgame)=>UserGame.create({
-    UserId: request.body.uid,
-    GameId: newgame.id
-  }))
-  .then((result)=>{
-    response.json(result)
-  })
-});
-
-
-router.get('/test/get/games', (request, response, next) => {
   Game.findAll({
-    include: {
-      model: User
-    }
+    include: User
   })
-  .then((results) => {
-    response.json(results)
-  })
-  .catch((err) => {
-    response.send(err)
-  })
-})
+  .then((result)=>{
+    response.json(result)
+  });
+});
+
 
 //removes all the games from game table
 router.post('/clearall',(request,response,next) => {
@@ -95,6 +73,15 @@ router.post('/clearall',(request,response,next) => {
     response.json(result)
   });
 })
-    
+  
+//removes games have null gameid
+router.post('/removeNull',(response, request, next) => {
+  UserGame.destroy({
+    where:{
+      GameId: null,
+    }
+  })
+});
+
   module.exports = router;
   
