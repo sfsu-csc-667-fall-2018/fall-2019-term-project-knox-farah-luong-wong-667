@@ -16,15 +16,6 @@ body {
 #lobby .container #lobby-row #lobby-column #lobby-box #lobby-box-scroll{
   max-height: 600px;
   overflow-y: auto;
-  transform:rotateX(180deg);
-                -moz-transform:rotateX(180deg); /* Mozilla */
-                -webkit-transform:rotateX(180deg); /* Safari and Chrome */
-                -ms-transform:rotateX(180deg); /* IE 9+ */
-                -o-transform:rotateX(180deg); /* Opera */
-transform:rotateX(180deg);
-                -moz-transform:rotateX(180deg); /* Mozilla */
-                -webkit-transform:rotateX(180deg); /* Safari and Chrome */
-                -ms-transform:rotateX(180deg); /* IE 9+ */
-                -o-transform:rotateX(180deg); /* Opera */
+
 }
 
