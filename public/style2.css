@@ -2,8 +2,10 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #17a2b8;
-  height: 100vh;
+  background: url(/img/scrabble-image.jpg) no-repeat center center fixed;
+  opacity: 0.6;
+  background-size: contain 100%;
+  background-color: #17a2b8;  height: 100vh;
 }
 
 #lobby .container #lobby-row #lobby-column #lobby-box {

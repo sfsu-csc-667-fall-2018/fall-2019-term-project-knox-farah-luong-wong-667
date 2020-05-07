@@ -8,13 +8,13 @@ const User = models["User"];
 router.get("/", (request, response, next) => {
   GlobalMessage.findAll({
     include: {
-        model: User
+      model: User
     }
   })
-  .then((results) => {
-    console.log(results)
-    response.render("authenticated/lobby", { title: "lobby page", messages: results })
-  })
+    .then((results) => {
+      console.log(results)
+      response.render("authenticated/lobby", { title: "lobby page", messages: results, username: request.session.username })
+    })
 });
 
 module.exports = router;

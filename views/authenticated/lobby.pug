@@ -8,7 +8,7 @@ block content
           #lobby-column.col-md-6
             #lobby-box.col-md-12
               #lobby-box-scroll
-                  p Welcome 
+                  p Welcome #{username}
 
                   div#row.justify-content-end
                     for result in messages
@@ -19,7 +19,7 @@ block content
                             p #{result.body}
             div
               form(method='POST' action='/api/global-message/create')
-                  //- label(for='messageBody') Message Body
+                  //- label(for='messageBody') #{username}
                   input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
                   br
                   button.w-100.btn.btn-success(type='submit') Submit

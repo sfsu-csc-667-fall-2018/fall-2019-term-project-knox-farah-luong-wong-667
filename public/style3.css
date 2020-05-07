@@ -9,16 +9,10 @@ body {
   height: 100vh;
 }
 
-#register .container #register-row #register-column #register-box {
+#home .container #home-row #home-column #home-box {
   margin-top: 200px;
   max-width: 600px;
-  height: 465px;
+  height: 250px;
   border: 1px solid #9C9C9C;
   background-color: #EAEAEA;
-}
-#register .container #register-row #register-column #register-box #register-form {
-  padding: 20px;
-}
-#register .container #register-row #register-column #register-box #register-form #register-link {
-  margin-top: -85px;
 }

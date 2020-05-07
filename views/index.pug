@@ -1,21 +1,30 @@
 extends layout
 
 block content
-  if username != undefined
-    h1 Welcome, #{username}
-    title=title
-  else
-    h1 Welcome! Please sign in.
-    title = title
+  #home
+    .container
+        #home-row.row.justify-content-center.align-items-center
+          #home-column.col-md-6
+              #home-box.col-md-12
+                if username != undefined
+                  h1.text-center.text-black Welcome!! #{username}
+                  br
+                  br
+                  title=title
+                  a(href="/games"): button.w-100.btn.btn-success(type="button") Game Page
+                  hr
+                  a(href="/lobby"): button.w-100.btn.btn-info(type="button") Lobby page
+                  
 
-  ul
-    li
-      a(href="users/login") Login
-    li
-      a(href="users/register") Register
-    if username != undefined
-      li
-        a(href="/lobby") Lobby Page
-      li
-        a(href="/games") Games Page
-  
+                else
+                  h1.text-center.text-primary Scrable With Friends
+                  hr 
+                  h3.text-center.text-secondary Sign In To Play!!
+                  br
+                  title=title
+                  a(href="users/login"): button.w-100.btn.btn-primary(type="button") Sign In
+                  a(href="users/register"): button.w-100.btn.btn-warning(type="button") Register
+                  
+    
+                 
+    

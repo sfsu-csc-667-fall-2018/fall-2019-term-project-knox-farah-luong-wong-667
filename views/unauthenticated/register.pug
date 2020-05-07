@@ -2,14 +2,14 @@ extends layout
 
 block content
   #register
-    h3.text-center.text-white.pt-5 Register Here
     .container
       #register-row.row.justify-content-center.align-items-center
          #register-column.col-md-6
           #register-box.col-md-12
               form(method='POST' action='/api/user/create')
                 br
-                br
+                h3.text-center.text-info Register Here
+                hr
                 div.form-group
                   label(for='email') Email
                   input.form-control(type='text' id='email' placeholder='email' name='emailsignup')
