@@ -1,3 +1,4 @@
+const Sequelize = require("sequelize")
 const express = require('express');
 const router = express.Router();
 const db = require('../../db/index');
@@ -62,6 +63,35 @@ router.get('/gamelist',(request, response, next) =>{
   });
 });
 
+router.get('/availableGames', (request, response, next) => {
+  UserGame.findAll({
+    raw: true,
+    group: ['GameId'],
+    attributes: ['GameId', [Sequelize.fn('COUNT', 'GameId'), 'GameIdCount']],
+  })
+  .then((results) => {
+    var availableGameIds = []
+    results.forEach((object) => {
+      if(object.GameIdCount < 2) {
+        availableGameIds.push(object.GameId)
+      }
+    })
+    Game.findAll({
+      where: {
+        id: availableGameIds
+      }
+    }).then((availableGames) => {
+      response.json(availableGames)
+    })
+  })
+})
+
+router.get('/getUserGames', (request, response, next) => {
+  UserGame.findAll()
+  .then((results) => {
+    response.json(results)
+  })
+})
 
 //removes all the games from game table
 router.post('/clearall',(request,response,next) => {

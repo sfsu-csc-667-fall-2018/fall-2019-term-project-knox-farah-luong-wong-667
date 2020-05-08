@@ -28,7 +28,9 @@ block content
           #lobby-column.col-md-6
             #lobby-box.col-md-12
               #lobby-box-scroll
-                  h1 This is where available games go
+                  div#row.justify-content-end
+                    for game in availableGames
+                      b #{game.id}
 
 
           //- a(href = "/games") Games
