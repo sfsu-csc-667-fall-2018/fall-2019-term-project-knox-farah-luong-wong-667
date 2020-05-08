@@ -1,10 +1,11 @@
 extends layout
 
 block content
+  a(href="/"): button.btn.btn-secondary(type="button") Go Home
   #lobby
-    h3.text-center.text-white.pt-5 Lobby Chat
     .container
-      #lobby-row.row.justify-content-center.align-items-center
+      h3.text-content-center.text-white.pt-5 Lobby Chat
+      #lobby-row.row.justify-content-left.align-items-center
           #lobby-column.col-md-6
             #lobby-box.col-md-12
               #lobby-box-scroll
@@ -17,11 +18,17 @@ block content
                           b #{result.User.username}
                           div
                             p #{result.body}
+            
             div
               form(method='POST' action='/api/global-message/create')
                   //- label(for='messageBody') #{username}
                   input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
-                  br
                   button.w-100.btn.btn-success(type='submit') Submit
-              
+          
+          #lobby-column.col-md-6
+            #lobby-box.col-md-12
+              #lobby-box-scroll
+                  h1 This is where available games go
+
+
           //- a(href = "/games") Games
