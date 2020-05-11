@@ -1,9 +1,29 @@
 const express = require("express");
 const router = express.Router();
+const associations = require("../models/associations");
+const Tile = associations["Tile"];
+const Game = associations["Game"];
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express", username: req.session.username });
 });
+
+router.get("/tileTest", function(request, response, next) {
+  Tile.create({
+    xCoordinate: 1,
+    yCoordinate: 1,
+    letter: 'A',
+    GameId: 'dda9fc91-2b14-4cfe-aca5-95486af9058f'
+  }).then(_ => {
+    Tile.findAll({
+      include: {
+        model: Game
+      }
+    }).then((results) => {
+      response.json(results)
+    })
+  })
+})
 
 module.exports = router;

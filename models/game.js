@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4
     },
+    UserId: {
+      type: DataTypes.UUID
+    }
   }, {});
   Game.associate = function(models) {
     // associations can be defined here

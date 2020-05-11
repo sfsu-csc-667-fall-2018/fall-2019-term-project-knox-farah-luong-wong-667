@@ -6,6 +6,7 @@ const router = express.Router();
 const models = require("../../models/associations");
 const GlobalMessage = models["GlobalMessage"];
 const User = models["User"];
+const UserGame = models["UserGame"];
 
 
   router.get("/getUsers", function (request, response, next) {
@@ -33,6 +34,13 @@ router.post("/create", function (request, response, next) {
         });
     });
 });
+
+router.post('/getUserGames', function(request, response, next) {
+    UserGame.findAll()
+    .then((results) => {
+        response.json(results)
+    })
+})
 
 router.post('/verify', function (request, response, next) {
     User.findOne({
