@@ -86,6 +86,7 @@ router.get('/getBoardTiles', (request, response, next) => {
   })
 })
 
+//Places a tile with the given tile id on the game board for its game with the provided x and y coordinates
 router.post('/placeTile', (request, response, next) => {
   Tile.findOne({
     where: {
@@ -96,6 +97,38 @@ router.post('/placeTile', (request, response, next) => {
     tileResult.update({
       xCoordinate: request.body.x,
       yCoordinate: request.body.y
+    }).then((result) => {
+      console.log(result)
+      response.json(result)
+    })
+  })
+})
+
+//Sets null scores to 0 in db, meant for admin purposes, will be deprecated once default values are set in schema
+router.post('/updateNullScores', (request, response, next) => {
+  UserGame.update({
+    playerScore: 0
+  },
+  {
+    where: {
+      playerScore: null
+    }
+  }).then((results) => {
+    console.log(results)
+    response.json(results)
+  })
+})
+
+//Adds the given score to the player score
+router.post('/addToPlayerScore', (request, response, next) => {
+  UserGame.findOne({
+    where: {
+      UserId: request.body.uid,
+      GameId: request.body.gid
+    }
+  }).then((userGameResult) => {
+    userGameResult.update({
+      playerScore: userGameResult.playerScore + request.body.score
     }).then((result) => {
       console.log(result)
       response.json(result)
