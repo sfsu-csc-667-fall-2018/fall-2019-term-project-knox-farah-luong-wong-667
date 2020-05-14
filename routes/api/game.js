@@ -54,6 +54,22 @@ router.post('/assignTile', (request, response, next) => {
   })
 })
 
+//Gets all the tiles in a given game that are assigned to a given player that haven't been placed yet
+router.get('/getPlayerHand', (request, response, next) => {
+  Tile.findAll({
+    where: {
+      GameId: request.body.gid,
+      UserId: request.body.uid,
+      xCoordinate: null,
+      yCoordinate: null
+    }
+  })
+  .then((result) => {
+    console.log(result)
+    response.json(result)
+  })
+})
+
 router.get('/getTiles', (request, response, next) => {
   Tile.findAll()
   .then((results) => {
