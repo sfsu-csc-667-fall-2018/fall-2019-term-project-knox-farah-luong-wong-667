@@ -12,8 +12,34 @@ router.get('/', (request, response, next) => {
   response.render('game', { title: 'Gamepage' });
 });
 
+//Gets a random tile assigned to the given game that hasn't been assigned to a player yet
+router.get('/getAvailableTile', (request, response, next) => {
+  Tile.findOne({
+    order: [
+      [Sequelize.fn('RANDOM')] 
+    ],
+    limit: 1,
+    where: {
+      GameId: request.body.gid,
+      UserId: null
+    },
+    include: [Game, User]
+  })
+  .then((tileResult) => {
+    console.log(tileResult)
+    response.json(tileResult)
+  })
+})
+
+router.get('/getTiles', (request, response, next) => {
+  Tile.findAll()
+  .then((results) => {
+    response.json(results)
+  })
+})
+
 //Create a game, requires a user to be logged in
-router.get('/create', (request, response, next) => {
+router.post('/create', (request, response, next) => {
   var pieceBag = {
     'A': 9,
     'B': 2,
