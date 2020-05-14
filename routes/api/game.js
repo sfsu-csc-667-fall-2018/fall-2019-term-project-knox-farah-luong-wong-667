@@ -136,9 +136,27 @@ router.post('/addToPlayerScore', (request, response, next) => {
   })
 })
 
+//Returns all tiles in the db - this table will get VERY big so be cautious with its use
+//Likely to produce performance issues
 router.get('/getTiles', (request, response, next) => {
   Tile.findAll()
   .then((results) => {
+    response.json(results)
+  })
+})
+
+//Updates the active player in the game with the given id to the user with the given id
+router.post('/updateActivePlayer', (request, response, next) => {
+  Game.findOne({
+    where: {
+      id: request.body.gid
+    }
+  }).then((gameResult) => {
+    gameResult.update({
+      UserId: request.body.uid
+    })
+  }).then((results) => {
+    console.log(results)
     response.json(results)
   })
 })
