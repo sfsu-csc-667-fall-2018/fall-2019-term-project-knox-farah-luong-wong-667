@@ -56,6 +56,61 @@ router.post('/assignTile', (request, response, next) => {
   })
 })
 
+//Fills the player hand with unassigned tiles if they have less than 7 tiles
+//Body: 'gid': game id, 'uid': user id
+router.post('/fillPlayerHand', (request, response, next) => {
+  Tile.findAll({
+    where: {
+      GameId: request.body.gid,
+      UserId: request.body.uid,
+      xCoordinate: null,
+      yCoordinate: null
+    }
+  })
+  .then((handResult) => {
+    if (handResult.length < 7) {
+      var promises = []
+      var count = 7 - handResult.length
+      while(count > 0) {
+        var newPromise = Tile.findOne({
+          order: [
+            [Sequelize.fn('RANDOM')]
+          ],
+          limit: 1,
+          where: {
+            GameId: request.body.gid,
+            UserId: null
+          },
+          include: [Game, User]
+        }).then((tileResult) => {
+          tileResult.update({
+            UserId: request.body.uid
+          })
+        })
+        promises.push(newPromise)
+        count = count - 1
+      }
+      Promise.all(promises)
+      .then(_ => {
+        Tile.findAll({
+          where: {
+            GameId: request.body.gid,
+            UserId: request.body.uid,
+            xCoordinate: null,
+            yCoordinate: null
+          }
+        })
+        .then((results) => {
+          console.log(results)
+          response.json(results)
+        })
+      })
+    } else {
+      response.json("Player already has 7 tiles")
+    }
+  })
+})
+
 //Gets all the tiles in a given game that are assigned to a given player that haven't been placed yet
 //Body: 'gid': game id, 'uid': user id
 router.get('/getPlayerHand', (request, response, next) => {
