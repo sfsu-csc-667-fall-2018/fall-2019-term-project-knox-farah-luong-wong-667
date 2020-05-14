@@ -13,6 +13,7 @@ router.get('/', (request, response, next) => {
 });
 
 //Gets a random tile assigned to the given game that hasn't been assigned to a player yet
+//Body: 'gid': game id
 router.get('/getAvailableTile', (request, response, next) => {
   Tile.findOne({
     order: [
@@ -32,6 +33,7 @@ router.get('/getAvailableTile', (request, response, next) => {
 })
 
 //Assigns a random tile assigned to the given game that hasn't been assigned to a player yet
+//Body: 'gid': game id, 'uid': user id
 router.post('/assignTile', (request, response, next) => {
   Tile.findOne({
     order: [
@@ -55,6 +57,7 @@ router.post('/assignTile', (request, response, next) => {
 })
 
 //Gets all the tiles in a given game that are assigned to a given player that haven't been placed yet
+//Body: 'gid': game id, 'uid': user id
 router.get('/getPlayerHand', (request, response, next) => {
   Tile.findAll({
     where: {
@@ -71,6 +74,7 @@ router.get('/getPlayerHand', (request, response, next) => {
 })
 
 //Gets all the placed tiles associated with the given game
+//Body: 'gid': game id
 router.get('/getBoardTiles', (request, response, next) => {
   Tile.findAll({
     where: {
@@ -87,10 +91,11 @@ router.get('/getBoardTiles', (request, response, next) => {
 })
 
 //Places a tile with the given tile id on the game board for its game with the provided x and y coordinates
+//Body: 'tid': tile id, 'x': x coordinate of game board, 'y': y coordinate of game board
 router.post('/placeTile', (request, response, next) => {
   Tile.findOne({
     where: {
-      id: request.body.tileId
+      id: request.body.tid
     }
   })
   .then((tileResult) => {
@@ -105,6 +110,7 @@ router.post('/placeTile', (request, response, next) => {
 })
 
 //Sets null scores to 0 in db, meant for admin purposes, will be deprecated once default values are set in schema
+//Body: N/A
 router.post('/updateNullScores', (request, response, next) => {
   UserGame.update({
     playerScore: 0
@@ -120,6 +126,7 @@ router.post('/updateNullScores', (request, response, next) => {
 })
 
 //Adds the given score to the player score
+//Body: 'gid': game id, 'uid': user id, 'score': the calculated score of the move
 router.post('/addToPlayerScore', (request, response, next) => {
   UserGame.findOne({
     where: {
@@ -138,6 +145,7 @@ router.post('/addToPlayerScore', (request, response, next) => {
 
 //Returns all tiles in the db - this table will get VERY big so be cautious with its use
 //Likely to produce performance issues
+//Body: N/A
 router.get('/getTiles', (request, response, next) => {
   Tile.findAll()
   .then((results) => {
@@ -146,6 +154,7 @@ router.get('/getTiles', (request, response, next) => {
 })
 
 //Updates the active player in the game with the given id to the user with the given id
+//Body: 'gid': game id, 'uid': user id
 router.post('/updateActivePlayer', (request, response, next) => {
   Game.findOne({
     where: {
@@ -162,6 +171,7 @@ router.post('/updateActivePlayer', (request, response, next) => {
 })
 
 //Create a game, requires a user to be logged in
+//Body: N/A
 router.post('/create', (request, response, next) => {
   var pieceBag = {
     'A': 9,
@@ -193,7 +203,7 @@ router.post('/create', (request, response, next) => {
     ' ': 2
   }
   Game.create({
-    UserId: request.body.uid
+    UserId: request.session.uid
   })
   .then((newgame) => {
     UserGame.create({
@@ -215,6 +225,8 @@ router.post('/create', (request, response, next) => {
   })
 });
 
+//TODO: Adjust so a found game is updated
+//In construction
 router.post('/join', (request, response, next) => {
   UserGame.findOrCreate({
     where:{
@@ -229,7 +241,8 @@ router.post('/join', (request, response, next) => {
   .catch((err) => response.json(err))
 });
   
-//returns  user's games
+//Returns the logged in user's games
+//Body: N/A
 router.get('/mygames', (request, response, next) =>{
   UserGame.findAll({
     where: {
@@ -244,8 +257,9 @@ router.get('/mygames', (request, response, next) =>{
   })
 });
 
-//returns all games, with user info.
-router.get('/gamelist',(request, response, next) =>{
+//Returns all games, with User info attached
+//Body: N/A
+router.get('/getGames',(request, response, next) =>{
   Game.findAll({
     include: User
   })
@@ -254,6 +268,8 @@ router.get('/gamelist',(request, response, next) =>{
   });
 });
 
+//Returns all games that don't have all users
+//Body: N/A
 router.get('/availableGames', (request, response, next) => {
   UserGame.findAll({
     raw: true,
@@ -277,6 +293,8 @@ router.get('/availableGames', (request, response, next) => {
   })
 })
 
+//Returns all UserGames (join table)
+//Body: N/A
 router.get('/getUserGames', (request, response, next) => {
   UserGame.findAll()
   .then((results) => {
@@ -284,8 +302,10 @@ router.get('/getUserGames', (request, response, next) => {
   })
 })
 
-//removes all the games from game table
-router.post('/clearall',(request,response,next) => {
+//Removes all games from the Game table
+//Be careful with this (obviously)
+//Body: N/A
+router.post('/clearAll',(request,response,next) => {
   Game.destroy({
     where: {}
   })
@@ -295,7 +315,9 @@ router.post('/clearall',(request,response,next) => {
   });
 })
   
-//removes games have null gameid
+//Removes UserGames with null GameId
+//All UserGames should have a GameId, so this shouldn't break anything
+//Body: N/A
 router.post('/removeNull',(response, request, next) => {
   UserGame.destroy({
     where:{
