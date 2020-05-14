@@ -6,11 +6,65 @@ const models = require("../../models/associations")
 const Game = models["Game"];
 const User = models["User"];
 const UserGame = models["UserGame"];
+const Tile = models["Tile"];
 
 router.get('/', (request, response, next) => {
   response.render('game', { title: 'Gamepage' });
 });
 
+//Create a game, requires a user to be logged in
+router.get('/create', (request, response, next) => {
+  var pieceBag = {
+    'A': 9,
+    'B': 2,
+    'C': 2,
+    'D': 4,
+    'E': 12,
+    'F': 2,
+    'G': 3,
+    'H': 2,
+    'I': 9,
+    'J': 1,
+    'K': 1,
+    'L': 4,
+    'M': 2,
+    'N': 6,
+    'O': 8,
+    'P': 2,
+    'Q': 1,
+    'R': 6,
+    'S': 4,
+    'T': 6,
+    'U': 4,
+    'V': 2,
+    'W': 2,
+    'X': 1,
+    'Y': 2,
+    'Z': 1,
+    ' ': 2
+  }
+  Game.create({
+    UserId: request.body.uid
+  })
+  .then((newgame) => {
+    UserGame.create({
+      UserId: newgame.UserId,
+      GameId: newgame.id
+    }).then((usergame) => {
+      var promises = []
+      for (var key in pieceBag) {
+        for(let i = 0; i < pieceBag[key]; i++) {
+          var newPromise = Tile.create({'letter':key, 'GameId':usergame.GameId});
+          promises.push(newPromise);
+        }
+      }
+      Promise.all(promises)
+      .then((results) => {
+        response.json(results)
+      })
+    })
+  })
+});
 
 router.post('/join', (request, response, next) => {
   UserGame.findOrCreate({
@@ -24,18 +78,6 @@ router.post('/join', (request, response, next) => {
     response.json(results)
   })
   .catch((err) => response.json(err))
-});
-
-//create a game, requires user to be logged in
-router.post('/create',(request, response, next) =>{
-  Game.create()
-  .then((newgame)=>UserGame.create({
-    UserId: request.session.uid,
-    GameId: newgame.id
-  }))
-  .then((result)=>{
-    response.json(result)
-  })
 });
   
 //returns  user's games
