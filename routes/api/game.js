@@ -31,6 +31,29 @@ router.get('/getAvailableTile', (request, response, next) => {
   })
 })
 
+//Assigns a random tile assigned to the given game that hasn't been assigned to a player yet
+router.post('/assignTile', (request, response, next) => {
+  Tile.findOne({
+    order: [
+      [Sequelize.fn('RANDOM')] 
+    ],
+    limit: 1,
+    where: {
+      GameId: request.body.gid,
+      UserId: null
+    },
+    include: [Game, User]
+  })
+  .then((tileResult) => {
+    tileResult.update({
+      UserId: request.body.uid
+    }).then((result) => {
+      console.log(result)
+      response.json(result)
+    })
+  })
+})
+
 router.get('/getTiles', (request, response, next) => {
   Tile.findAll()
   .then((results) => {
