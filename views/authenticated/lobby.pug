@@ -31,6 +31,9 @@ block content
                   div#row.justify-content-end
                     for game in availableGames
                       b #{game.id}
+            div
+              form(method='POST' action='/api/game/create')
+                button.w-100.btn.btn-success(type='submit') Create Game
 
 
           //- a(href = "/games") Games

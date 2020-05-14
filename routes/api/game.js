@@ -274,7 +274,7 @@ router.post('/create', (request, response, next) => {
       }
       Promise.all(promises)
       .then((results) => {
-        response.json(results)
+        response.redirect('/games')
       })
     })
   })
@@ -381,5 +381,5 @@ router.post('/removeNull',(response, request, next) => {
   })
 });
 
-  module.exports = router;
+module.exports = router;
   
