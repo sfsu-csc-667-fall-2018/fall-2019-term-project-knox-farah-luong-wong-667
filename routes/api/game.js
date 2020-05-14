@@ -70,6 +70,39 @@ router.get('/getPlayerHand', (request, response, next) => {
   })
 })
 
+//Gets all the placed tiles associated with the given game
+router.get('/getBoardTiles', (request, response, next) => {
+  Tile.findAll({
+    where: {
+      GameId: request.body.gid,
+      [Sequelize.Op.not]: [
+        {xCoordinate: null}
+      ]
+    }
+  })
+  .then((result) => {
+    console.log(result)
+    response.json(result)
+  })
+})
+
+router.post('/placeTile', (request, response, next) => {
+  Tile.findOne({
+    where: {
+      id: request.body.tileId
+    }
+  })
+  .then((tileResult) => {
+    tileResult.update({
+      xCoordinate: request.body.x,
+      yCoordinate: request.body.y
+    }).then((result) => {
+      console.log(result)
+      response.json(result)
+    })
+  })
+})
+
 router.get('/getTiles', (request, response, next) => {
   Tile.findAll()
   .then((results) => {
