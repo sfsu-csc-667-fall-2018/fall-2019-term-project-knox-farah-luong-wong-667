@@ -280,21 +280,33 @@ router.post('/create', (request, response, next) => {
   })
 });
 
-//TODO: Adjust so a found game is updated
-//In construction
+//Creates a new UserGame entry for the user, adding them to the available game
+//Fails if the user is already part of the game
+//Body: 'gid': game id
 router.post('/join', (request, response, next) => {
-  UserGame.findOrCreate({
-    where:{
+  UserGame.findAll({
+    where: {
       GameId: request.body.gid,
-      UserId: request.body.uid,
+      UserId: request.session.uid
     }
   })
-  .then((results)=>{
-    console.log(results),
-    response.json(results)
+  .then((userGameResults) => {
+    if(userGameResults.length == 0) { //Additional configuring may need to happen here or when routed
+      UserGame.create({
+        GameId: request.body.gid,
+        UserId: request.session.uid,
+        playerScore: 0
+      })
+      .then((results) => {
+        console.log(results)
+        response.redirect("/games")
+      })
+    } else {
+      //Almost definitely this is not what we want to do here, but we will figure it out later
+      response.json("You are already a part of this game!")
+    }
   })
-  .catch((err) => response.json(err))
-});
+})
   
 //Returns the logged in user's games
 //Body: N/A
