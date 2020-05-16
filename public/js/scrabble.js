@@ -1,14 +1,11 @@
 const container = document.getElementById("con");
-
+const trayContainer = document.getElementById("tray");
+var selectedPieces = []
+var playerHand = -1
+var gameBoard = -1
 var selectedX = -1
 var selectedY = -1
-//I have:
-//Hand and board
-//If I click on board I want it to stay highighted
-//If I click on a tile in the hand I want it to stay highlighted
-//If there is a selected board square and it is empty place the tile in the hand there
-//If it isn't empty, do not highlight the tile
-//Remove the tile from 
+var selectedPiece = -1
 
 function fillTable(grid) {
   console.log(grid)
@@ -22,11 +19,39 @@ function fillTable(grid) {
       cell.onclick = function() {
         console.log("Inner HTML: ", cell.innerHTML)
         if(cell.innerHTML === "") {
-          selectedX = cell.getAttribute('x') 
+          selectedX = cell.getAttribute('x')
           selectedY = cell.getAttribute('y')
-          console.log("Selected X: ", selectedX, "| Selected Y: ", selectedY)
+          if (selectedPiece != -1) {
+            cell.innerHTML = selectedPiece.letter
+            selectedPiece.xCoordinate = cell.getAttribute("x")
+            selectedPiece.yCoordinate = cell.getAttribute("y")
+            selectedPieces.push(selectedPiece.id)
+            document.querySelectorAll(`[tid="${selectedPiece.id}"]`).forEach((handPiece) => {
+              handPiece.style.color = "red"
+            })
+            cell.setAttribute('tid', selectedPiece.id)
+            selectedPiece = -1
+          }
+        } else {
+          if (selectedPieces.includes(cell.getAttribute('tid'))) {
+            const index = selectedPieces.indexOf(cell.getAttribute('tid'));
+            if (index > -1) {
+              selectedPieces.splice(index, 1);
+            }
+            cell.innerHTML = ""
+            playerHand.forEach((tile) => {
+              if(tile.id == cell.getAttribute('tid')) {
+                tile.xCoordinate = null
+                tile.yCoordinate = null
+              }
+            })
+            document.querySelectorAll(`[tid="${cell.getAttribute('tid')}"]`).forEach((handPiece) => {
+              handPiece.style.color = "black"
+            })
+            cell.setAttribute('tid', null)
+          }
         }
-      }; //What do I want to happen here?
+      };
       if(grid[i][j] == null) {
         container.appendChild(cell).className += " grid-item";
       } else {
@@ -38,4 +63,29 @@ function fillTable(grid) {
   }
 }
 
-fillTable(JSON.parse(document.currentScript.getAttribute('gameBoard')));
+function fillTray(tray) {
+  for(var i = 0; i < tray.length; i++) {
+    let cell = document.createElement("div")
+    cell.innerHTML = tray[i].letter
+    cell.setAttribute("tid", tray[i].id)
+    cell.onclick = function() {
+      playerHand.forEach((tile) => {
+        if(tile.id == cell.getAttribute('tid') && !selectedPieces.includes(tile.id)) {
+          if(selectedPiece != -1) {
+            document.querySelectorAll(`[tid="${selectedPiece.id}"]`).forEach((handPiece) => {
+              handPiece.style.color = "black"
+            })
+          }
+          selectedPiece = tile
+          cell.style.color = "green"
+        }
+      })
+    }
+    trayContainer.appendChild(cell).classname += "grid-item";
+  }
+}
+
+playerHand = JSON.parse(document.currentScript.getAttribute('playerHand'))
+gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
+fillTable(gameBoard);
+fillTray(playerHand);
