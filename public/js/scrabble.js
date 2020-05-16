@@ -8,7 +8,6 @@ var selectedY = -1
 var selectedPiece = -1
 
 function fillTable(grid) {
-  console.log(grid)
   document.body.style.setProperty("--grid-rows", grid.length);
   document.body.style.setProperty("--grid-cols", grid[0].length);
   for (var i = 0; i < grid.length; i ++) {
@@ -17,7 +16,6 @@ function fillTable(grid) {
       cell.setAttribute('x', i)
       cell.setAttribute('y', j)
       cell.onclick = function() {
-        console.log("Inner HTML: ", cell.innerHTML)
         if(cell.innerHTML === "") {
           selectedX = cell.getAttribute('x')
           selectedY = cell.getAttribute('y')
@@ -55,7 +53,6 @@ function fillTable(grid) {
       if(grid[i][j] == null) {
         container.appendChild(cell).className += " grid-item";
       } else {
-        console.log(grid[i])
         cell.innerHTML = grid[i][j].letter
         container.appendChild(cell).className += " grid-item";
       }
