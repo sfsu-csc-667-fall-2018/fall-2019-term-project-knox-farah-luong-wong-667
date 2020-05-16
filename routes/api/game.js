@@ -57,12 +57,13 @@ router.post('/assignTile', (request, response, next) => {
 })
 
 //Fills the player hand with unassigned tiles if they have less than 7 tiles
-//Body: 'gid': game id, 'uid': user id
-router.post('/fillPlayerHand', (request, response, next) => {
+//Body: N/A
+//Requires login
+router.get('/fillPlayerHand', (request, response, next) => {
   Tile.findAll({
     where: {
-      GameId: request.body.gid,
-      UserId: request.body.uid,
+      GameId: request.session.gid,
+      UserId: request.session.uid,
       xCoordinate: null,
       yCoordinate: null
     }
@@ -78,13 +79,13 @@ router.post('/fillPlayerHand', (request, response, next) => {
           ],
           limit: 1,
           where: {
-            GameId: request.body.gid,
+            GameId: request.session.gid,
             UserId: null
           },
           include: [Game, User]
         }).then((tileResult) => {
           tileResult.update({
-            UserId: request.body.uid
+            UserId: request.session.uid
           })
         })
         promises.push(newPromise)
@@ -92,21 +93,10 @@ router.post('/fillPlayerHand', (request, response, next) => {
       }
       Promise.all(promises)
       .then(_ => {
-        Tile.findAll({
-          where: {
-            GameId: request.body.gid,
-            UserId: request.body.uid,
-            xCoordinate: null,
-            yCoordinate: null
-          }
-        })
-        .then((results) => {
-          console.log(results)
-          response.json(results)
-        })
+        response.redirect("/games")
       })
     } else {
-      response.json("Player already has 7 tiles")
+      response.redirect("/games")
     }
   })
 })
@@ -261,10 +251,14 @@ router.post('/create', (request, response, next) => {
     UserId: request.session.uid
   })
   .then((newgame) => {
+    request.session.gid = newgame.id
     UserGame.create({
       UserId: newgame.UserId,
-      GameId: newgame.id
+      GameId: newgame.id,
+      playerScore: 0
     }).then((usergame) => {
+      console.log("UserGame:")
+      console.log(usergame)
       var promises = []
       for (var key in pieceBag) {
         for(let i = 0; i < pieceBag[key]; i++) {
@@ -274,7 +268,7 @@ router.post('/create', (request, response, next) => {
       }
       Promise.all(promises)
       .then((results) => {
-        response.redirect('/games')
+        response.redirect('/api/game/fillPlayerHand')
       })
     })
   })
@@ -284,6 +278,8 @@ router.post('/create', (request, response, next) => {
 //Fails if the user is already part of the game
 //Body: 'gid': game id
 router.post('/join', (request, response, next) => {
+  console.log('Body GID:')
+  console.log(request.body.gid)
   UserGame.findAll({
     where: {
       GameId: request.body.gid,
@@ -291,6 +287,7 @@ router.post('/join', (request, response, next) => {
     }
   })
   .then((userGameResults) => {
+    request.session.gid = request.body.gid
     if(userGameResults.length == 0) { //Additional configuring may need to happen here or when routed
       UserGame.create({
         GameId: request.body.gid,
@@ -302,8 +299,8 @@ router.post('/join', (request, response, next) => {
         response.redirect("/games")
       })
     } else {
-      //Almost definitely this is not what we want to do here, but we will figure it out later
-      response.json("You are already a part of this game!")
+      request.session.gid = request.body.gid
+      response.redirect("/games")
     }
   })
 })
@@ -369,10 +366,10 @@ router.get('/getUserGames', (request, response, next) => {
   })
 })
 
-//Removes all games from the Game table
+//Removes all Games from the Game table
 //Be careful with this (obviously)
 //Body: N/A
-router.post('/clearAll',(request,response,next) => {
+router.post('/clearGames',(request,response,next) => {
   Game.destroy({
     where: {}
   })
@@ -380,6 +377,26 @@ router.post('/clearAll',(request,response,next) => {
   .then((result)=>{
     response.json(result)
   });
+})
+
+//Removes all UserGames from the UserGame table
+router.post('/clearUserGames', (request, response, next) => {
+  UserGame.destroy({
+    where: {}
+  })
+  .then((results) => {
+    response.json(results)
+  })
+})
+
+//Removes all Tiles from the Tile table
+router.post('/clearTiles', (request, response, next) => {
+  Tile.destroy({
+    where: {}
+  })
+  .then((results) => {
+    response.json(results)
+  })
 })
   
 //Removes UserGames with null GameId

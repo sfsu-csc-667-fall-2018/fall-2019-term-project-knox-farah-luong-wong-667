@@ -1,6 +1,19 @@
 extends layout
 
 block content
+<<<<<<< HEAD
+  h1= title
+  p Welcomes to the game page, #{username}
+
+  #gametray
+    .container
+      #gametray.row
+          for tilepiece in playerHand
+            div.gap#tilepieces
+              div #{tilepiece.letter}
+          
+  a(href = "/") Home
+=======
   a(href="/lobby"): button.btn.btn-secondary(type="button") Back To Lobby
   br
   #Game
@@ -9,3 +22,4 @@ block content
       p Yo Welcome To Scrabble!! #{username}
 
       
+>>>>>>> 62289a2ec7921661b4b574c09cf31a87e9cab7ae
