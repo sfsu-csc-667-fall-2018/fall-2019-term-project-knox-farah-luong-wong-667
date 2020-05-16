@@ -31,7 +31,27 @@ router.get("/", (request, response, next) => {
       .then((gameBoard) => {
         console.log("Game Board:")
         console.log(gameBoard)
-        response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameBoard })
+        var gameArray = [
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+          new Array(16),
+        ]
+        gameBoard.forEach((object) => {
+          gameArray[object.xCoordinate][object.yCoordinate] = object
+        })
+        response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray })
       })
     }
   })
