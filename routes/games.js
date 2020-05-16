@@ -32,21 +32,21 @@ router.get("/", (request, response, next) => {
         console.log("Game Board:")
         console.log(gameBoard)
         var gameArray = [
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
-          new Array(16),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
+          new Array(15),
         ]
         gameBoard.forEach((object) => {
           gameArray[object.xCoordinate][object.yCoordinate] = object
