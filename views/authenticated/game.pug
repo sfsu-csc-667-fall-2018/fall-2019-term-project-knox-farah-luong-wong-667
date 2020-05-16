@@ -1,15 +1,11 @@
 extends layout
 
 block content
-  h1= title
-  p Welcomes to the game page, #{username}
+  a(href="/lobby"): button.btn.btn-secondary(type="button") Back To Lobby
+  br
+  #Game
+    .container
+      h1= title
+      p Yo Welcome To Scrabble!! #{username}
 
-  div 
-    form(method='POST' action='/api/game/create')
-      button(type='submit') Create a Game
-
-  div 
-    form(method='GET' action='/api/game/mygames')
-      button(type='submit') Show My Games
-
-  a(href = "/") Home
+      
