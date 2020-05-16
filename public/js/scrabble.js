@@ -1,64 +1,23 @@
 const container = document.getElementById("con");
-const letterContainer = document.getElementById("letterContainer");
 var v = 50;
 var globalSnapTimer = null;
 
-function makeTable(rows) {
-  var cols = rows;
-  document.body.style.setProperty("--grid-rows", rows);
-  document.body.style.setProperty("--grid-cols", cols);
-  var grid = [
-    [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4],
-    [0, 2, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 2, 0],
-    [0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0],
-    [1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 1],
-    [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0],
-    [0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0],
-    [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0],
-    [4, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 4],
-    [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0],
-    [0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0],
-    [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0],
-    [1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 1],
-    [0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 0, 0, 2, 0, 0],
-    [0, 2, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 2, 0],
-    [4, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 4]
-  ];
-
-  for (c = 0; c < rows * cols; c++) {
-    let cell = document.createElement("div");
-
-    if (grid[Math.floor(c / 15)][c % 15] == 4) {
-      cell.className = "multiplier";
-      cell.innerHTML = "Triple word";
-      cell.style.backgroundColor = "#F5654A";
-    } else if (grid[Math.floor(c / 15)][c % 15] == 2) {
-      cell.className = "multiplier";
-      cell.innerHTML = "<sub>Double</sub> word";
-      cell.style.backgroundColor = "#F9BBAC";
-    } else if (grid[Math.floor(c / 15)][c % 15] == 3) {
-      cell.className = "multiplier";
-      cell.innerHTML = "Triple letter";
-      cell.style.backgroundColor = "#3597B0";
-    } else if (grid[Math.floor(c / 15)][c % 15] == 1) {
-      cell.className = "multiplier";
-      cell.innerHTML = "<sub>Double</sub> letter";
-      cell.style.backgroundColor = "#B8CDC8";
-    } else if (grid[Math.floor(c / 15)][c % 15] == 5) {
-      let star = document.createElement("IMG");
-      star.id = "star";
-      cell.className = "multiplier";
-      star.setAttribute(
-        "src",
-        "https://upload.wikimedia.org/wikipedia/commons/7/78/BlackStar.PNG"
-      );
-      star.setAttribute("draggable", false);
-      cell.style.backgroundColor = "#F9BBAC";
-      cell.appendChild(star);
+function fillTable(grid) {
+  console.log(grid)
+  document.body.style.setProperty("--grid-rows", grid.length);
+  document.body.style.setProperty("--grid-cols", grid[0].length);
+  for (var i = 0; i < grid.length; i ++) {
+    for(var j = 0; j< grid[i].length; j++) {
+      let cell = document.createElement("div")
+      if(grid[i][j] == null) {
+        container.appendChild(cell).className += " grid-item";
+      } else {
+        console.log(grid[i])
+        cell.innerHTML = grid[i][j].letter
+        container.appendChild(cell).className += " grid-item";
+      }
     }
-    container.appendChild(cell).className += " grid-item";
   }
 }
 
-makeTable(15);
-
+fillTable(JSON.parse(document.currentScript.getAttribute('gameBoard')));
