@@ -1,4 +1,4 @@
-extends layout
+extends gamesLayout
 
 block content
 
@@ -14,5 +14,3 @@ block content
           for tilepiece in playerHand
             div.gap#tilepieces
               div #{tilepiece.letter}
-          
-  a(href = "/") Home
