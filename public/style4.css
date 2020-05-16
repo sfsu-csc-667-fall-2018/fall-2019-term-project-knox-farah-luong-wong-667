@@ -1,0 +1,49 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    background: url(/img/scrabble-image.jpg) no-repeat center center fixed;
+    opacity: 0.6;
+    background-size: contain 100%;
+    background-color: #17a2b8;
+    height: 100vh;
+}
+
+#Game .container #Game-row #Game-column #Game-box {
+    margin-top: 5px;
+    max-width: 600px;
+    border: 1px solid #9C9C9C;
+    background-color: #EAEAEA;
+}
+  
+#Game .container #Game-row #Game-column #Game-box #Game-box-scroll{
+    max-height: 600px;
+    overflow-y: auto;
+
+}
+
+#gametray #gametray.row{ 
+    height: 100px;
+    width: 500px;
+    background-color: #C19A6B;
+    opacity: 95%;
+    padding: 15px;
+    margin: auto;
+}
+
+#gametray #gametray.row #tilepieces{
+    max-width: 50px;
+    max-height: 50px;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(247, 223, 195);
+    text-align: center;
+    font-size: 36px;
+    align-self: center;
+}
+
+
+.gap{
+    margin-right: auto;
+    margin-left: auto;
+}
