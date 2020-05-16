@@ -11,5 +11,9 @@ block content
   div 
     form(method='GET' action='/api/game/mygames')
       button(type='submit') Show My Games
+  
+  div.row.col-md-8
+    for tile in playerHand
+      b #{tile.letter}
 
   a(href = "/") Home
