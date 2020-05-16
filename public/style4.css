@@ -1,7 +1,26 @@
-  
+
 body {
-   
-  }
+    margin: 0;
+    padding: 0;
+    background: url(/img/scrabble-image.jpg) no-repeat center center fixed;
+    opacity: 0.6;
+    background-size: contain 100%;
+    background-color: #17a2b8;
+    height: 100vh;
+}
+
+#Game .container #Game-row #Game-column #Game-box {
+    margin-top: 5px;
+    max-width: 600px;
+    border: 1px solid #9C9C9C;
+    background-color: #EAEAEA;
+}
+  
+#Game .container #Game-row #Game-column #Game-box #Game-box-scroll{
+    max-height: 600px;
+    overflow-y: auto;
+
+}
 
 #gametray .container #gametray.row{ 
     height: 100px;
