@@ -3,10 +3,35 @@ const router = express.Router();
 const associations = require("../models/associations");
 const Tile = associations["Tile"];
 const Game = associations["Game"];
+const UserGame = associations["UserGame"];
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express", username: req.session.username });
+  if(req.session.uid != undefined) {
+    UserGame.findAll({
+      where: {
+        UserId: req.session.uid,
+      },
+    })
+    .then((userGameResults) => {
+      var myGameIds = []
+      userGameResults.forEach((object) => {
+        myGameIds.push(object.GameId)
+      })
+      Game.findAll({
+        where: {
+          id: myGameIds
+        }
+      }).then((myGames) => {
+        res.render("index", {title: "Express", username: req.session.username, myGames: myGames})
+      })
+    })
+    .catch((err) => {
+      res.send(err)
+    })
+  } else {
+    res.render("index", { title: "Express", username: req.session.username, myGames: [] });
+  }
 });
 
 router.get("/tileTest", function(request, response, next) {

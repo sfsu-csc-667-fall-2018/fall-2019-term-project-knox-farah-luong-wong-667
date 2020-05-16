@@ -15,4 +15,6 @@ body {
   height: 250px;
   border: 1px solid #9C9C9C;
   background-color: #EAEAEA;
+  max-height: 250px;
+  overflow-y: auto;
 }
