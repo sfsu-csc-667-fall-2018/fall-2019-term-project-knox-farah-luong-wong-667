@@ -307,14 +307,24 @@ router.post('/join', (request, response, next) => {
   
 //Returns the logged in user's games
 //Body: N/A
-router.get('/mygames', (request, response, next) =>{
+router.get('/myGames', (request, response, next) =>{
   UserGame.findAll({
     where: {
       UserId: request.session.uid,
     },
   })
-  .then((results) => {
-    response.json(results)
+  .then((userGameResults) => {
+    var myGameIds = []
+    userGameResults.forEach((object) => {
+      myGameIds.push(object.GameId)
+    })
+    Game.findAll({
+      where: {
+        id: myGameIds
+      }
+    }).then((myGames) => {
+      console.json(myGames)
+    })
   })
   .catch((err) => {
     response.send(err)

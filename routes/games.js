@@ -14,7 +14,7 @@ router.get("/", (request, response, next) => {
       yCoordinate: null
     }
   })
-  .then((result) => {
+  .then((result) => { //Make sure game board is returned at some point
     if(result.length < 7) {
       response.redirect("/api/game/fillPlayerHand")
     } else {
