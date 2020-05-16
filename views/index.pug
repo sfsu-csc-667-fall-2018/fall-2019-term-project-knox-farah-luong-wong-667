@@ -5,17 +5,14 @@ block content
     .container
         #home-row.row.justify-content-center.align-items-center
           #home-column.col-md-6
-              #home-box.col-md-12
+              #home-box.col-md-12.align-self-center
                 if username != undefined
                   h1.text-center.text-black Welcome!! #{username}
                   br
                   br
                   title=title
-                  a(href="/games"): button.w-100.btn.btn-success(type="button") Game Page
                   hr
                   a(href="/lobby"): button.w-100.btn.btn-info(type="button") Lobby page
-                  
-
                 else
                   h1.text-center.text-primary Scrabble With Friends
                   hr 
@@ -24,7 +21,17 @@ block content
                   title=title
                   a(href="users/login"): button.w-100.btn.btn-primary(type="button") Sign In
                   a(href="users/register"): button.w-100.btn.btn-warning(type="button") Register
-                
+          if username != undefined
+            #home-column.col-md-6
+              #home-box.col-md-12
+                div.justify-content-around
+                  h1.text-center.text-black #{username}'s Games
+                  for game in myGames
+                    b.col-md-8 #{game.id}
+                    div
+                      form.col-md-4(method='POST' action='/api/game/join')
+                        input.w-100(type='hidden' id='gid' name='gid' value=game.id)
+                        button.btn.btn-success(type='submit') Play
                   
     
                  
