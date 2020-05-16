@@ -1,10 +1,13 @@
 extends layout
 
 block content
-<<<<<<< HEAD
-  h1= title
-  p Welcomes to the game page, #{username}
 
+  a(href="/lobby"): button.btn.btn-secondary(type="button") Back To Lobby
+  br
+  #Game
+    .container
+      h1= title
+      p Yo Welcome To Scrabble!! #{username}
   #gametray
     .container
       #gametray.row
@@ -13,13 +16,3 @@ block content
               div #{tilepiece.letter}
           
   a(href = "/") Home
-=======
-  a(href="/lobby"): button.btn.btn-secondary(type="button") Back To Lobby
-  br
-  #Game
-    .container
-      h1= title
-      p Yo Welcome To Scrabble!! #{username}
-
-      
->>>>>>> 62289a2ec7921661b4b574c09cf31a87e9cab7ae
