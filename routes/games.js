@@ -4,8 +4,6 @@ const router = express.Router();
 const models = require("../models/associations");
 const User = models["User"];
 const Tile = models["Tile"];
-const Game = models["Game"];
-
 
 router.get("/", (request, response, next) => {
   Tile.findAll({
@@ -25,5 +23,5 @@ router.get("/", (request, response, next) => {
     }
   })
 })
-    
+
 module.exports = router;

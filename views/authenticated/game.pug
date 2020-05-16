@@ -4,16 +4,11 @@ block content
   h1= title
   p Welcomes to the game page, #{username}
 
-  div 
-    form(method='POST' action='/api/game/create')
-      button(type='submit') Create a Game
-
-  div 
-    form(method='GET' action='/api/game/mygames')
-      button(type='submit') Show My Games
-  
-  div.row.col-md-8
-    for tile in playerHand
-      b #{tile.letter}
-
+  #gametray
+    .container
+      #gametray.row
+          for tilepiece in playerHand
+            div.gap#tilepieces
+              div #{tilepiece.letter}
+          
   a(href = "/") Home
