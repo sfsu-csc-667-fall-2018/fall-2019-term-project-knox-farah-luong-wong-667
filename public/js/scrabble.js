@@ -1,6 +1,4 @@
 const container = document.getElementById("con");
-var v = 50;
-var globalSnapTimer = null;
 
 function fillTable(grid) {
   console.log(grid)
@@ -9,6 +7,9 @@ function fillTable(grid) {
   for (var i = 0; i < grid.length; i ++) {
     for(var j = 0; j< grid[i].length; j++) {
       let cell = document.createElement("div")
+      cell.setAttribute('x', i)
+      cell.setAttribute('y', j)
+      cell.onclick = function() { alert(cell.getAttribute('x')); };
       if(grid[i][j] == null) {
         container.appendChild(cell).className += " grid-item";
       } else {
