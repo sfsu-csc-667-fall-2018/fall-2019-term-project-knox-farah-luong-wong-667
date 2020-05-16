@@ -18,8 +18,21 @@ router.get("/", (request, response, next) => {
     if(result.length < 7) {
       response.redirect("/api/game/fillPlayerHand")
     } else {
+      console.log("Player Hand:")
       console.log(result)
-      response.render("../views/authenticated/game", { username: request.session.username, playerHand: result })
+      Tile.findAll({
+        where: {
+          GameId: request.session.gid,
+          [Sequelize.Op.not]: [
+            {xCoordinate: null}
+          ]
+        }
+      })
+      .then((gameBoard) => {
+        console.log("Game Board:")
+        console.log(gameBoard)
+        response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameBoard })
+      })
     }
   })
 })
