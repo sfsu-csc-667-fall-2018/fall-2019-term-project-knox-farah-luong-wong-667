@@ -8,6 +8,14 @@ block content
     .container
       h1= title
       p Yo Welcome To Scrabble!! #{username}
+
+  #gameboard
+     .container2
+       #gameboard.row.column
+          for tiles in playerHand
+            div.gap#tiles
+              div #{tiles.letter}
+
   #gametray
     .container
       #gametray.row

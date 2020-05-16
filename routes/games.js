@@ -14,9 +14,22 @@ router.get("/", (request, response, next) => {
       yCoordinate: null
     }
   })
+
+   //hand's logic
   .then((result) => {
     if(result.length < 7) {
       response.redirect("/api/game/fillPlayerHand")
+    } else {
+      console.log(result)
+      response.render("../views/authenticated/game", { username: request.session.username, playerHand: result })
+    }
+  })
+
+
+  //board's logic (WIP)
+  .then((result) => {
+    if(result.length < 15) {
+      response.redirect("/api/game/Tile")
     } else {
       console.log(result)
       response.render("../views/authenticated/game", { username: request.session.username, playerHand: result })
