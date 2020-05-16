@@ -1,0 +1,241 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+:root {
+  --grid-cols: 1;
+  --grid-rows: 15;
+  --grid-scale: 50;
+  --header-height: min(5vw,40px);
+}
+
+
+body {
+  font-family: Montserrat;
+  user-select: none;
+  /*   Required for scrolling - https://stackoverflow.com/questions/5791886/jquery-draggable-shows-helper-in-wrong-place-after-page-scrolled */
+  overflow: auto;
+}
+#bo {
+  background-color: #c2a172;
+	height: var(--header-height);
+	width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-bottom: 1px ;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  margin: 1px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+
+#wrapper {
+  text-align: center;
+/*   border: 1px solid red; */
+}
+
+h1 {
+  font-size: min(4em , 5vw);
+  cursor: pointer;
+  display: inline-block;
+  margin: auto;
+  transition: text-shadow 3s ease-in-out;
+  user-select: none;
+}
+
+h1:hover {
+  text-align: center;
+  animation: glow 1s ease-in-out infinite alternate;
+  animation-delay: 3s;
+  text-shadow: 0 0 10px #fff, 0 0 15px #ff4da6, 0 0 20px #ff4da6,
+    0 0 25px #ff4da6, 0 0 30px #ff4da6, 0 0 35px #ff4da6, 0 0 40px #ff4da6;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 15px #ff4da6, 0 0 20px #ff4da6,
+      0 0 25px #ff4da6, 0 0 30px #ff4da6, 0 0 35px #ff4da6, 0 0 40px #ff4da6;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 25px #ff4da6, 0 0 30px #ff4da6,
+      0 0 35px #ff4da6, 0 0 45px #ff4da6, 0 0 45px #ff4da6, 0 0 55px #ff4da6;
+  }
+}
+
+
+#con {
+  width: calc(var(--grid-scale) * 1vw );
+  margin: 0 auto;
+  display: grid;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;  
+  top: min(6em, 8vw);
+  grid-template-rows: repeat(
+    var(--grid-rows),
+    calc(var(--grid-scale) * 0.9vw / var(--grid-rows)));
+  grid-template-columns: repeat(
+    var(--grid-cols),
+    calc(var(--grid-scale) * 0.9vw / var(--grid-cols)));
+  );
+  grid-gap: calc(var(--grid-scale) * 0.1vw / var(--grid-cols)) calc(var(--grid-scale) * 0.1vw / var(--grid-rows));
+  padding-top: calc(var(--grid-scale) * 0.1vw / var(--grid-rows));
+  padding-left: calc(var(--grid-scale) * 0.1vw / var(--grid-cols));
+  padding-bottom: calc(var(--grid-scale) * 0.1vw / var(--grid-cols));
+  background-color: white;
+  box-shadow: calc(var(--grid-scale) * 1vw / 100 ) calc(var(--grid-scale) * 1vw / 100 ) #ddd;
+}
+.grid-item {
+  text-align: center;
+  background-color: #d9b382;
+}
+
+.grid-item:hover {
+  box-shadow: 0 0 15px #eee inset;
+}
+.multiplier {
+  font-size: calc( var(--grid-scale) * 1vw / (var(--grid-rows) * 4) );
+  line-height: 1.6;
+}
+.multiplier sub {
+  font-size: 0.9em;
+  vertical-align: middle;
+  line-height: 1.6;
+}
+#star {
+  filter: invert(1);
+  max-width: 80%;
+  max-height: 80%;
+  position: relative;
+  top: 10%;
+}
+
+#fullscreen {
+  height: min(5vw,2.5em);
+  width: min(5vw,2.5em);
+  position: fixed;
+  top: 0.2vw;
+  right: 0.2vw;
+  filter: invert(1);
+}
+#slider {
+  width: 20vw;
+  position: absolute;
+  height: 1vw;
+  left: 10%;
+  top: 10px;
+}
+#slider .ui-slider-handle {
+  font-size: 1.2vw;
+  padding: 0.2vw;
+  border: 2px solid #ddd;
+  text-decoration:none;
+  line-height: 1.2vw;
+  height: 1.15vw;
+}
+
+#letterContainer {
+  width: calc( 50% - var(--grid-scale) * 0.51vw);
+/*   display: inline-block; */
+}
+#letterContainer hr {
+  width: 50%;
+  margin-top: 0;
+  margin-bottom: 0.2vw;
+  margin-left: 0.1vw;
+  border: 1.5px solid #b99362;
+  border-radius: 5px;
+}
+#letterContainer h3 {
+  font-size: min(1em , 1vw);
+  margin: 0;
+  color: #b99362;
+}
+#letterContainer h5 {
+  font-size: min(1em , 1vw);
+  color: #b99362;
+}
+.letter, .obstacle {
+ display: inline-block;
+ position: relative;
+}
+.obstacle {
+  position: relative;
+}
+
+.letter, .obstacle{
+/*   background-color: #c9a372; */
+  background-color: 	#FFDEAD;
+  color: crimson;
+  margin: 0;
+  margin-right: calc(var(--grid-scale) * 0.096vw / var(--grid-cols));
+  margin-bottom: calc(var(--grid-scale) * 0.096vw / var(--grid-cols));
+  line-height: normal;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: calc(var(--grid-scale) * 0.04vw) ;
+  vertical-align: center;
+  width: calc(var(--grid-scale) * 0.06vw);
+  height: calc(var(--grid-scale) * 0.06vw);
+  border: 0.1em solid #b99362;
+  user-select: none;
+}
+
+.letter sub, .obstacle sub{
+  font-size: 0.33em;
+  position: absolute;
+  right: 0.2em;
+  bottom: 0.5em;
+  vertical-align: sub;
+  line-height: 0;
+  color: black;
+}
+#undo, #drop {
+  height: 100%;
+  width: var(--header-height);
+  background: none;
+  border: none;
+  border: 1px solid red;
+  padding: 0;
+}
+#undoText, #dropText{
+  color: #B3404A;
+  font-size: calc(var(--header-height) / 3);
+  height: 0%;
+  width: 0%;
+/*   margin-left: -5%; */
+  font-weight: bold;
+}
+#undoText {
+/*   margin-left: 5%; */
+}
+#undoBG, #dropBG{
+  width: 80%;
+  height: 80%;
+  margin-top: -25%;
+  border: 1px solid;
+}
+#undoBG {
+  background: url("https://image.flaticon.com/icons/svg/364/364331.svg") no-repeat 0% 0%/100%;
+}
+#dropBG {
+  background: url("https://image.flaticon.com/icons/svg/364/364330.svg") no-repeat 0% 0%/100%;
+}
+#undo:active, #drop:active {	top: calc(1em + 2px); }
+/* #undo:focus, #drop:focus {	outline: none; } */

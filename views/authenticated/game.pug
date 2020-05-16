@@ -10,15 +10,19 @@ block content
       #Game-row.row.justify-content-left.align-items-center
         #Game-column.col-md-6
             #Game-box.col-md-12
-              h1 game board goes here
-  #gametray
-    .container
-      #gametray.row
-          for tilepiece in playerHand
-            div.gap#tilepieces
-              div #{tilepiece.letter}
-      #gametray.row
-          for tile in gameBoard
-            div.gap#tilepieces
-              div #{tile.letter}
+              #slider
+              #wrapper
+              #con
+              link(rel='stylesheet' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css')
+        #gametray
+            #gametray.row
+                for tilepiece in playerHand
+                  div.gap#tilepieces
+                    div #{tilepiece.letter}
+            #gametray.row
+                for tile in gameBoard
+                  div.gap#tilepieces
+                    div #{tile.letter}
 
+
+    
