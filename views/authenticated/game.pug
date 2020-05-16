@@ -3,6 +3,7 @@ extends gamesLayout
 block content
   a(href="/lobby"): button.btn.btn-secondary(type="button") Back To Lobby
   br
+
   #Game
     .container
       h1= title
@@ -10,6 +11,7 @@ block content
       #Game-row.row.justify-content-left.align-items-center
         #Game-column.col-md-6
             #Game-box.col-md-12
+<<<<<<< HEAD
               #slider
               #wrapper
               #con
@@ -24,5 +26,21 @@ block content
                   div.gap#tilepieces
                     div #{tile.letter}
 
+=======
+              for row in gameBoard
+                div.row
+                  for tile in row
+                    if tile == undefined
+                      b _
+                    else
+                      b #{tile.letter}
+              h1 game board goes here
+  #gametray
+    .container
+      #gametray.row
+          for tilepiece in playerHand
+            div.gap#tilepieces
+              div #{tilepiece.letter}
+>>>>>>> 03346134922f64d54a1a08e3103ae00faf6de0d7
 
     
