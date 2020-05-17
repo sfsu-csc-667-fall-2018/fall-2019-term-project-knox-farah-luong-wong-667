@@ -110,7 +110,9 @@ function submitTurn() {
   //Score must be updated
   //Next player should become the active player
   //The tiles that have changed need to be updated in the Tile table
-  if(validatePiecePlacement && checkIfWordsAreValid()) {
+  console.log(gameMetadata.UserId)
+  console.log(gameData.UserId)
+  if(validatePiecePlacement && checkIfWordsAreValid() && gameMetadata.UserId == gameData.UserId) {
     gameData.playerScore = turnScore
     var updatedTiles = []
     for(var i = 0; i < playerHand.length; i++) {
@@ -528,10 +530,10 @@ function changeColorOfElementWithTid(tid, color) {
   })
 }
 
-
 playerHand = JSON.parse(document.currentScript.getAttribute('playerHand'))
 gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
 gameData = JSON.parse(document.currentScript.getAttribute('gameData'))
+gameMetadata = JSON.parse(document.currentScript.getAttribute('gameMetadata'))
 console.log("Player Score: ", gameData.playerScore)
 fillTable(gameBoard);
 fillTray(playerHand);
