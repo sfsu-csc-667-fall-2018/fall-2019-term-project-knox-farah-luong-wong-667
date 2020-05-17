@@ -82,6 +82,38 @@ function fillTray(tray) {
 
 function calculateScores() {
   //gameBoard must be updated first
+  var columns = getScorableColumns()
+  var verticalScore = 0
+  columns.forEach((column) => {
+    if(column.length > 1) { 
+      verticalScore = verticalScore + calculateScoreForArray(column)
+    }
+  })
+  var rows = getScorableRows()
+  var horizontalScore = 0
+  rows.forEach((row) => {
+    if(row.length > 1) {
+      horizontalScore = horizontalScore + calculateScoreForArray(row)
+    }
+  })
+  var totalScore = verticalScore + horizontalScore
+  if(verticalScore == 0 && horizontalScore == 0) {
+    totalScore = addSelectedPieces()
+  }
+  console.log("Total Score: ", totalScore)
+}
+
+
+function calculateScoreForArray(arr) {
+  score = 0
+  arr.forEach((element) => {
+    score = score + scores[element.letter]
+  })
+  return score
+}
+
+
+function addSelectedPieces() {
   var calculatedScore = 0
   selectedPieces.forEach((pieceId) => {
     var tile = null
@@ -95,88 +127,62 @@ function calculateScores() {
       })
     })
     calculatedScore = calculatedScore + scores[tile.letter]
-    turnScore = calculatedScore
   })
-  selectedPieces.forEach((pieceId) => {
-    //Count all orthogonal words
-    var calcPiece = null
-    gameBoard.forEach((row) => {
-      row.forEach((column) => {
-        if(column != null) {
-          if(column.id == pieceId) {
-            calcPiece = column
+  return calculatedScore
+}
+
+
+function getScorableColumns() {
+  var allColumns = []
+  var subArr = []
+  var foundSelected = false
+  for(var i = 0; i < gameBoard[0].length; i++) {
+    for(var j = 0; j < gameBoard.length; j++) {
+      if(gameBoard[j][i] != null) {
+        subArr.push(gameBoard[j][i])
+        if(selectedPieces.includes(gameBoard[j][i].id)) {
+          foundSelected = true
+        }
+      }
+      if(gameBoard[j][i] == null) {
+        if(subArr.length > 0) {
+          if(foundSelected == true) {
+            allColumns.push(subArr)
+            foundSelected = false
           }
         }
-      })
-    })
-    //const calcPiece = getTileFromGameBoard(pieceId)
-    //Horizontal
-    //Keep going until:
-    //Null
-    //End of line
-    //Piece id is already in selected
-    //(selectedPieces.includes(horizontalStart.id) && horizontalStart.id != piece.id)
-    var horizontalScore = 0
-    var horizontalMultiplier = 1
-    var count = 0
-    var horizontalStart = gameBoard[calcPiece.xCoordinate][count]
-    while(horizontalStart == null && count < 15) {
-      console.log("H Start")
-      count = count + 1
-      horizontalStart = gameBoard[calcPiece.xCoordinate][count]
-    }
-    //count = 0
-    var horizontalEnd = horizontalStart
-    while(horizontalEnd == horizontalStart || horizontalEnd != null && count < 15) {
-      console.log("H End")
-      if(selectedPieces.includes(horizontalEnd.id) && horizontalEnd.id != calcPiece.id) {
-        horizontalMultiplier = 0
+        subArr = []
       }
-      horizontalEnd = gameBoard[calcPiece.xCoordinate][count]
-      if(horizontalEnd != null) {
-        console.log("Horizontal letter: ", horizontalEnd.letter)
-        horizontalScore = horizontalScore + scores[horizontalEnd.letter]
-      }
-      count = count + 1
     }
-    horizontalScore = horizontalScore * horizontalMultiplier
+  }
+  return allColumns
+}
 
-    var verticalScore = 0
-    var verticalMultiplier = 1
-    count = 0
-    var verticalStart = gameBoard[count][calcPiece.yCoordinate]
-    while(verticalStart == null && count < 15) {
-      console.log("V Start")
-      count = count + 1
-      verticalStart = gameBoard[count][calcPiece.yCoordinate]
-    }
-    //count = 0
-    var verticalEnd = verticalStart
-    while(verticalEnd == verticalStart || verticalEnd != null && count < 15) {
-      console.log("V End")
-      if(selectedPieces.includes(verticalEnd.id) && verticalEnd.id != calcPiece.id) {
-        verticalMultiplier = 0
+
+function getScorableRows() {
+  var allRows = []
+  var subArr = []
+  var foundSelected = false
+  for(var i = 0; i < gameBoard.length; i++) {
+    for(var j = 0; j < gameBoard.length; j++) {
+      if(gameBoard[i][j] != null) {
+        subArr.push(gameBoard[i][j])
+        if(selectedPieces.includes(gameBoard[i][j].id)) {
+          foundSelected = true
+        }
       }
-      verticalEnd = gameBoard[count][calcPiece.yCoordinate]
-      if(verticalEnd != null) {
-        verticalScore = verticalScore + scores[verticalEnd.letter]
+      if(gameBoard[i][j] == null) {
+        if(subArr.length > 0) {
+          if(foundSelected == true) {
+            allRows.push(subArr)
+            foundSelected = false
+          }
+        }
+        subArr = []
       }
-      count = count + 1
     }
-    verticalScore = verticalScore * verticalMultiplier
-    console.log("Letter: ", calcPiece.letter)
-    console.log("HorizontalScore: ", horizontalScore)
-    console.log("VerticalScore: ", verticalScore)
-    console.log("CalculatedScore: ", calculatedScore)
-    if(horizontalScore == scores[calcPiece.letter]) {
-      horizontalScore = 0
-    }
-    if(verticalScore == scores[calcPiece.letter]) {
-      verticalScore = 0
-    }
-    turnScore = turnScore + horizontalScore + verticalScore
-    console.log("Turn Score: ", turnScore)
-  })
+  }
+  return allRows
 }
 
 
@@ -208,13 +214,11 @@ function updateGameState(cell) {
     if (selectedPiece != -1) {
       placeTile(cell)
       calculateScores()
-      //updateScore(cell.innerHTML, true)
     }
   } else {
     if (selectedPieces.includes(cell.getAttribute('tid'))) {
-      //updateScore(cell.innerHTML, false)
-      calculateScores()
       replaceToHand(cell)
+      calculateScores()
     }
   }
 }
@@ -236,9 +240,6 @@ function placeTile(cell) {
   selectedPiece.yCoordinate = cell.getAttribute("y")
   selectedPieces.push(selectedPiece.id)
   updateGameBoard(selectedPiece, true)
-  gameBoard.forEach((element) => {
-    console.log(element)
-  })
   changeColorOfElementWithTid(selectedPiece.id, "red")
   cell.setAttribute('tid', selectedPiece.id)
   selectedPiece = -1
@@ -265,9 +266,6 @@ function replaceToHand(cell) {
       updateGameBoard(tile, false)
       tile.xCoordinate = null
       tile.yCoordinate = null
-      gameBoard.forEach((element) => {
-        console.log(element)
-      })
     }
   })
   changeColorOfElementWithTid(cell.getAttribute('tid'), "black")
