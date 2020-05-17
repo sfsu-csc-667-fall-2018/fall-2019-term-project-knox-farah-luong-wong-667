@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models/associations");
 const User = models["User"];
+const Game = models["Game"];
 const Tile = models["Tile"];
 const UserGame = models["UserGame"];
 
@@ -15,7 +16,7 @@ router.get("/", (request, response, next) => {
       yCoordinate: null
     }
   })
-  .then((result) => { //Make sure game board is returned at some point
+  .then((result) => {
     if(result.length < 7) {
       response.redirect("/api/game/fillPlayerHand")
     } else {
@@ -60,7 +61,13 @@ router.get("/", (request, response, next) => {
         }).then((userGameResult) => {
           console.log("Game Data:")
           console.log(userGameResult)
-          response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult })
+          Game.findOne({
+            where: {
+              id: request.session.gid
+            }
+          }).then((gameResult) => {
+            response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult, gameMetadata: gameResult })
+          })
         })
       })
     }

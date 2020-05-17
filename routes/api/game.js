@@ -140,14 +140,15 @@ router.get('/getBoardTiles', (request, response, next) => {
 router.post('/placeTile', (request, response, next) => {
   Tile.findOne({
     where: {
-      id: request.body.tid
+      id: request.body.id
     }
   })
   .then((tileResult) => {
     tileResult.update({
-      xCoordinate: request.body.x,
-      yCoordinate: request.body.y
+      xCoordinate: request.body.xCoordinate,
+      yCoordinate: request.body.yCoordinate
     }).then((result) => {
+      console.log("Placed Tile:")
       console.log(result)
       response.json(result)
     })
@@ -175,13 +176,14 @@ router.post('/updateNullScores', (request, response, next) => {
 router.post('/addToPlayerScore', (request, response, next) => {
   UserGame.findOne({
     where: {
-      UserId: request.body.uid,
-      GameId: request.body.gid
+      UserId: request.session.uid,
+      GameId: request.session.gid
     }
   }).then((userGameResult) => {
     userGameResult.update({
-      playerScore: userGameResult.playerScore + request.body.score
+      playerScore: request.body.playerScore
     }).then((result) => {
+      console.log("Player Score:")
       console.log(result)
       response.json(result)
     })
@@ -273,6 +275,44 @@ router.post('/create', (request, response, next) => {
     })
   })
 });
+
+router.post("/submitTurn", (request, response, next) => {
+  console.log("Request received!")
+  console.log(request.session.uid)
+  console.log(request.session.gid)
+  console.log(request.body.playerScore)
+  response.send("Okay!")
+})
+
+router.post('/submitTiles', (request, response, next) => {
+  console.log("Submitting tiles")
+  console.log(request.body.xCoordinate)
+  console.log(request.body.yCoordinate)
+  console.log(request.body.id)
+})
+
+router.post("/nextPlayer", (request, response, next) => {
+  UserGame.findOne({
+    where: {
+      GameId: request.session.gid,
+      [Sequelize.Op.not]: [
+        {UserId: request.session.uid}
+      ]
+    }
+  }).then((userGameResult) => {
+    Game.update({
+      UserId: userGameResult.UserId
+    },{
+      where: {
+        id: request.session.gid
+      }
+    }).then((results) => {
+      console.log("Next Player:")
+      console.log(results)
+      response.json(results)
+    })
+  })
+})
 
 //Creates a new UserGame entry for the user, adding them to the available game
 //Fails if the user is already part of the game

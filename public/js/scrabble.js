@@ -101,13 +101,50 @@ function calculateScores() {
     totalScore = addSelectedPieces()
   }
   document.getElementById("score").innerHTML = "Score: " + totalScore;
+  return totalScore
 }
 
 // function for button
 function submitTurn() {
 
-  console.log("Something happened");
-
+  //To submit a turn:
+  //Score must be updated
+  //Next player should become the active player
+  //The tiles that have changed need to be updated in the Tile table
+  console.log(gameMetadata.UserId)
+  console.log(gameData.UserId)
+  if(validatePiecePlacement && checkIfWordsAreValid() && gameMetadata.UserId == gameData.UserId) {
+    gameData.playerScore = turnScore
+    var updatedTiles = []
+    for(var i = 0; i < playerHand.length; i++) {
+      if(selectedPieces.includes(playerHand[i].id)) {
+        updatedTiles.push(playerHand[i])
+      }
+    }
+    //Add to score
+    fetch('/api/game/addToPlayerScore', {
+        method: 'POST',
+        body: JSON.stringify(gameData),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+        }
+    })
+    .then((scoreResponse) => {
+      fetch('/api/game/nextPlayer', {
+        method: 'POST'
+      }).then((nextPlayerResponse) => {
+        for(var i = 0; i < updatedTiles.length; i++) {
+          fetch('/api/game/placeTile', {
+            method: 'POST',
+            body: JSON.stringify(updatedTiles[i]),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8'
+            }
+          })
+        }
+      })
+    })
+  }
 }
 
 
@@ -494,10 +531,10 @@ function changeColorOfElementWithTid(tid, color) {
   })
 }
 
-
 playerHand = JSON.parse(document.currentScript.getAttribute('playerHand'))
 gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
 gameData = JSON.parse(document.currentScript.getAttribute('gameData'))
+gameMetadata = JSON.parse(document.currentScript.getAttribute('gameMetadata'))
 console.log("Player Score: ", gameData.playerScore)
 fillTable(gameBoard);
 fillTray(playerHand);
