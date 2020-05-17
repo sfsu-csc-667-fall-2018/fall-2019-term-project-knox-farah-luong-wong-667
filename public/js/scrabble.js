@@ -102,6 +102,13 @@ function calculateScores() {
   document.getElementById("score").innerHTML = "Score: " + totalScore;
 }
 
+// function for button
+function submitTurn() {
+
+  console.log("Something happened");
+
+}
+
 
 function calculateScoreForArray(arr) {
   score = 0
@@ -211,9 +218,9 @@ function validatePiecePlacement() {
 function checkIfWordsAreValid() {
   var allWordsValid = true
   var words = getWordsFromPlacement()
-  if(words.length > 0) {
-    for(var i = 0; i < words.length; i++) {
-      if(!isWordValid(words[i])) {
+  if (words.length > 0) {
+    for (var i = 0; i < words.length; i++) {
+      if (!isWordValid(words[i])) {
         allWordsValid = false
       }
     }
@@ -231,11 +238,11 @@ function checkIfWordsAreValid() {
 function isWordValid(word) {
   var url = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/" + word + "?key=d4ac4ba8-63b6-44d6-a80d-48c712fbb8cf"
   var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open( "GET", url, false );
-  xmlHttp.send( null );
+  xmlHttp.open("GET", url, false);
+  xmlHttp.send(null);
   var responseJson = JSON.parse(xmlHttp.responseText)
-  for(var i = 0; i < responseJson.length; i++) {
-    if(responseJson[i].meta == undefined) {
+  for (var i = 0; i < responseJson.length; i++) {
+    if (responseJson[i].meta == undefined) {
       console.log("No definition for " + word)
       return false
     }
@@ -248,20 +255,20 @@ function isWordValid(word) {
 function getWordsFromPlacement() {
   var allWords = []
   var columns = getScorableColumns()
-  for(var i = 0; i < columns.length; i++) {
+  for (var i = 0; i < columns.length; i++) {
     var newWord = ""
-    if(columns[i].length > 1) {
-      for(var j = 0; j < columns[i].length; j++) {
+    if (columns[i].length > 1) {
+      for (var j = 0; j < columns[i].length; j++) {
         newWord = newWord + columns[i][j].letter
       }
       allWords.push(newWord)
     }
   }
   var rows = getScorableRows()
-  for(var i = 0; i < rows.length; i++) {
+  for (var i = 0; i < rows.length; i++) {
     var newWord = ""
-    if(rows[i].length > 1) {
-      for(var j = 0; j < rows[i].length; j++) {
+    if (rows[i].length > 1) {
+      for (var j = 0; j < rows[i].length; j++) {
         newWord = newWord + rows[i][j].letter
       }
       allWords.push(newWord)
@@ -432,7 +439,6 @@ function updateGameState(cell) {
     }
   }
 }
-
 
 function placeTile(cell) {
   cell.innerHTML = selectedPiece.letter
