@@ -42,13 +42,13 @@ const scores = {
 function fillTable(grid) {
   document.body.style.setProperty("--grid-rows", grid.length);
   document.body.style.setProperty("--grid-cols", grid[0].length);
-  for (var i = 0; i < grid.length; i ++) {
-    for(var j = 0; j< grid[i].length; j++) {
+  for (var i = 0; i < grid.length; i++) {
+    for (var j = 0; j < grid[i].length; j++) {
       let cell = initializeBoardCell(i, j)
-      cell.onclick = function() {
+      cell.onclick = function () {
         updateGameState(cell)
       };
-      if(grid[i][j] == null) {
+      if (grid[i][j] == null) {
         container.appendChild(cell).className += " grid-item";
       } else {
         cell.innerHTML = grid[i][j].letter
@@ -60,14 +60,14 @@ function fillTable(grid) {
 
 
 function fillTray(tray) {
-  for(var i = 0; i < tray.length; i++) {
+  for (var i = 0; i < tray.length; i++) {
     let cell = document.createElement("div")
     cell.innerHTML = tray[i].letter
     cell.setAttribute("tid", tray[i].id)
-    cell.onclick = function() {
+    cell.onclick = function () {
       playerHand.forEach((tile) => {
-        if(tile.id == cell.getAttribute('tid') && !selectedPieces.includes(tile.id)) {
-          if(selectedPiece != -1) {
+        if (tile.id == cell.getAttribute('tid') && !selectedPieces.includes(tile.id)) {
+          if (selectedPiece != -1) {
             changeColorOfElementWithTid(selectedPiece.id, "black")
           }
           selectedPiece = tile
@@ -85,22 +85,22 @@ function calculateScores() {
   var columns = getScorableColumns()
   var verticalScore = 0
   columns.forEach((column) => {
-    if(column.length > 1) { 
+    if (column.length > 1) {
       verticalScore = verticalScore + calculateScoreForArray(column)
     }
   })
   var rows = getScorableRows()
   var horizontalScore = 0
   rows.forEach((row) => {
-    if(row.length > 1) {
+    if (row.length > 1) {
       horizontalScore = horizontalScore + calculateScoreForArray(row)
     }
   })
   var totalScore = verticalScore + horizontalScore
-  if(verticalScore == 0 && horizontalScore == 0) {
+  if (verticalScore == 0 && horizontalScore == 0) {
     totalScore = addSelectedPieces()
   }
-  console.log("Total Score: ", totalScore)
+  document.getElementById("score").innerHTML = "Score: " + totalScore;
 }
 
 
@@ -119,8 +119,8 @@ function addSelectedPieces() {
     var tile = null
     gameBoard.forEach((row) => {
       row.forEach((column) => {
-        if(column != null) {
-          if(column.id == pieceId) {
+        if (column != null) {
+          if (column.id == pieceId) {
             tile = column
           }
         }
@@ -136,17 +136,17 @@ function getScorableColumns() {
   var allColumns = []
   var subArr = []
   var foundSelected = false
-  for(var i = 0; i < gameBoard[0].length; i++) {
-    for(var j = 0; j < gameBoard.length; j++) {
-      if(gameBoard[j][i] != null) {
+  for (var i = 0; i < gameBoard[0].length; i++) {
+    for (var j = 0; j < gameBoard.length; j++) {
+      if (gameBoard[j][i] != null) {
         subArr.push(gameBoard[j][i])
-        if(selectedPieces.includes(gameBoard[j][i].id)) {
+        if (selectedPieces.includes(gameBoard[j][i].id)) {
           foundSelected = true
         }
       }
-      if(gameBoard[j][i] == null) {
-        if(subArr.length > 0) {
-          if(foundSelected == true) {
+      if (gameBoard[j][i] == null) {
+        if (subArr.length > 0) {
+          if (foundSelected == true) {
             allColumns.push(subArr)
             foundSelected = false
           }
@@ -163,17 +163,17 @@ function getScorableRows() {
   var allRows = []
   var subArr = []
   var foundSelected = false
-  for(var i = 0; i < gameBoard.length; i++) {
-    for(var j = 0; j < gameBoard.length; j++) {
-      if(gameBoard[i][j] != null) {
+  for (var i = 0; i < gameBoard.length; i++) {
+    for (var j = 0; j < gameBoard.length; j++) {
+      if (gameBoard[i][j] != null) {
         subArr.push(gameBoard[i][j])
-        if(selectedPieces.includes(gameBoard[i][j].id)) {
+        if (selectedPieces.includes(gameBoard[i][j].id)) {
           foundSelected = true
         }
       }
-      if(gameBoard[i][j] == null) {
-        if(subArr.length > 0) {
-          if(foundSelected == true) {
+      if (gameBoard[i][j] == null) {
+        if (subArr.length > 0) {
+          if (foundSelected == true) {
             allRows.push(subArr)
             foundSelected = false
           }
@@ -189,8 +189,8 @@ function getScorableRows() {
 function getTileFromGameBoard(tid) {
   gameBoard.forEach((row) => {
     row.forEach((column) => {
-      if(column != null) {
-        if(column.id == tid) {
+      if (column != null) {
+        if (column.id == tid) {
           return column
         }
       }
@@ -210,7 +210,7 @@ function validatePiecePlacement() {
 }
 
 function updateGameState(cell) {
-  if(cell.innerHTML === "") {
+  if (cell.innerHTML === "") {
     if (selectedPiece != -1) {
       placeTile(cell)
       calculateScores()
@@ -225,7 +225,7 @@ function updateGameState(cell) {
 
 
 function updateScore(letter, isIncreasing) {
-  if(isIncreasing) {
+  if (isIncreasing) {
     turnScore = turnScore + scores[letter]
   } else {
     turnScore = turnScore - scores[letter]
@@ -247,7 +247,7 @@ function placeTile(cell) {
 
 
 function updateGameBoard(selectedPiece, isAppending) {
-  if(isAppending) {
+  if (isAppending) {
     gameBoard[selectedPiece.xCoordinate][selectedPiece.yCoordinate] = selectedPiece
   } else {
     gameBoard[selectedPiece.xCoordinate][selectedPiece.yCoordinate] = null
@@ -262,7 +262,7 @@ function replaceToHand(cell) {
   }
   cell.innerHTML = ""
   playerHand.forEach((tile) => {
-    if(tile.id == cell.getAttribute('tid')) {
+    if (tile.id == cell.getAttribute('tid')) {
       updateGameBoard(tile, false)
       tile.xCoordinate = null
       tile.yCoordinate = null
