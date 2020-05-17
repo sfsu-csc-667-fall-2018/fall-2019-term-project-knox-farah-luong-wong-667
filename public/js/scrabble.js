@@ -433,20 +433,7 @@ function updateGameState(cell) {
   }
 }
 
-<<<<<<< HEAD
 
-function updateScore(letter, isIncreasing) {
-  if (isIncreasing) {
-    turnScore = turnScore + scores[letter]
-  } else {
-    turnScore = turnScore - scores[letter]
-  }
-  console.log("Turn Score: ", turnScore)
-}
-
-
-=======
->>>>>>> b9f5739422d617397b44602e96736e669d81c815
 function placeTile(cell) {
   cell.innerHTML = selectedPiece.letter
   selectedPiece.xCoordinate = cell.getAttribute("x")
