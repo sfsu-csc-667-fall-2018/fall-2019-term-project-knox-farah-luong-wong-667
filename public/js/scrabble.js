@@ -80,6 +80,20 @@ function fillTray(tray) {
 }
 
 
+function calculateScores() {
+  //gameBoard must be updated first
+}
+
+
+function validatePiecePlacement() {
+  //gameBoard must be updated so this logic will work
+  //Check if the placed word is:
+  //Connected to itself
+  //Attached to an already existing tile
+  //All words attached to a letter in the placed word are actually words
+  //Use Oxford api for this
+}
+
 function updateGameState(cell) {
   if(cell.innerHTML === "") {
     if (selectedPiece != -1) {
@@ -110,9 +124,22 @@ function placeTile(cell) {
   selectedPiece.xCoordinate = cell.getAttribute("x")
   selectedPiece.yCoordinate = cell.getAttribute("y")
   selectedPieces.push(selectedPiece.id)
+  updateGameBoard(selectedPiece, true)
+  gameBoard.forEach((element) => {
+    console.log(element)
+  })
   changeColorOfElementWithTid(selectedPiece.id, "red")
   cell.setAttribute('tid', selectedPiece.id)
   selectedPiece = -1
+}
+
+
+function updateGameBoard(selectedPiece, isAppending) {
+  if(isAppending) {
+    gameBoard[selectedPiece.xCoordinate][selectedPiece.yCoordinate] = selectedPiece
+  } else {
+    gameBoard[selectedPiece.xCoordinate][selectedPiece.yCoordinate] = null
+  }
 }
 
 
@@ -124,8 +151,12 @@ function replaceToHand(cell) {
   cell.innerHTML = ""
   playerHand.forEach((tile) => {
     if(tile.id == cell.getAttribute('tid')) {
+      updateGameBoard(tile, false)
       tile.xCoordinate = null
       tile.yCoordinate = null
+      gameBoard.forEach((element) => {
+        console.log(element)
+      })
     }
   })
   changeColorOfElementWithTid(cell.getAttribute('tid'), "black")
