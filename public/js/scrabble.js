@@ -200,8 +200,74 @@ function getTileFromGameBoard(tid) {
 
 
 function validatePiecePlacement() {
+  //Uncomment this line to see output about valid words in console
+  //Only use sparingly because we have a 1000 request limit with a free account
+  //When we have a submit button we will call this on submit pressed to limit usage
+  //checkIfWordsAreValid()
   return (isConnectedToBoard() && (isValidHorizontalPlacement() || isValidVerticalPlacement()))
-  //Use Oxford api for this
+}
+
+
+function checkIfWordsAreValid() {
+  var allWordsValid = true
+  var words = getWordsFromPlacement()
+  if(words.length > 0) {
+    for(var i = 0; i < words.length; i++) {
+      if(!isWordValid(words[i])) {
+        allWordsValid = false
+      }
+    }
+    console.log("All Words Valid?")
+    console.log(allWordsValid)
+    return allWordsValid
+  } else {
+    console.log("All Words Valid?")
+    console.log("false")
+    return false
+  }
+}
+
+
+function isWordValid(word) {
+  var url = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/" + word + "?key=d4ac4ba8-63b6-44d6-a80d-48c712fbb8cf"
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", url, false );
+  xmlHttp.send( null );
+  var responseJson = JSON.parse(xmlHttp.responseText)
+  for(var i = 0; i < responseJson.length; i++) {
+    if(responseJson[i].meta == undefined) {
+      console.log("No definition for " + word)
+      return false
+    }
+  }
+  console.log("Definitions found for " + word)
+  return true
+}
+
+
+function getWordsFromPlacement() {
+  var allWords = []
+  var columns = getScorableColumns()
+  for(var i = 0; i < columns.length; i++) {
+    var newWord = ""
+    if(columns[i].length > 1) {
+      for(var j = 0; j < columns[i].length; j++) {
+        newWord = newWord + columns[i][j].letter
+      }
+      allWords.push(newWord)
+    }
+  }
+  var rows = getScorableRows()
+  for(var i = 0; i < rows.length; i++) {
+    var newWord = ""
+    if(rows[i].length > 1) {
+      for(var j = 0; j < rows[i].length; j++) {
+        newWord = newWord + rows[i][j].letter
+      }
+      allWords.push(newWord)
+    }
+  }
+  return allWords
 }
 
 
@@ -352,15 +418,17 @@ function updateGameState(cell) {
     if (selectedPiece != -1) {
       placeTile(cell)
       turnScore = calculateScores()
+      var isValid = validatePiecePlacement()
       console.log("Is placement valid?")
-      console.log(validatePiecePlacement())
+      console.log(isValid)
     }
   } else {
     if (selectedPieces.includes(cell.getAttribute('tid'))) {
       replaceToHand(cell)
       turnScore = calculateScores()
+      var isValid = validatePiecePlacement()
       console.log("Is placement valid?")
-      console.log(validatePiecePlacement())
+      console.log(isValid)
     }
   }
 }
