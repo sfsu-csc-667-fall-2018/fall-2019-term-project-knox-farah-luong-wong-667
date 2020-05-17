@@ -3,6 +3,7 @@ const trayContainer = document.getElementById("tray");
 var selectedPieces = []
 var playerHand = -1
 var gameBoard = -1
+var gameData = -1
 var selectedPiece = -1
 
 
@@ -105,5 +106,7 @@ function changeColorOfElementWithTid(tid, color) {
 
 playerHand = JSON.parse(document.currentScript.getAttribute('playerHand'))
 gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
+gameData = JSON.parse(document.currentScript.getAttribute('gameData'))
+console.log("Player Score: ", gameData.playerScore)
 fillTable(gameBoard);
 fillTray(playerHand);

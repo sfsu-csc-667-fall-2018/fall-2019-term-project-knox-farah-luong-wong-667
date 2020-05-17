@@ -4,6 +4,7 @@ const router = express.Router();
 const models = require("../models/associations");
 const User = models["User"];
 const Tile = models["Tile"];
+const UserGame = models["UserGame"];
 
 router.get("/", (request, response, next) => {
   Tile.findAll({
@@ -51,7 +52,16 @@ router.get("/", (request, response, next) => {
         gameBoard.forEach((object) => {
           gameArray[object.xCoordinate][object.yCoordinate] = object
         })
-        response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray })
+        UserGame.findOne({
+          where: {
+            GameId: request.session.gid,
+            UserId: request.session.uid
+          }
+        }).then((userGameResult) => {
+          console.log("Game Data:")
+          console.log(userGameResult)
+          response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult })
+        })
       })
     }
   })
