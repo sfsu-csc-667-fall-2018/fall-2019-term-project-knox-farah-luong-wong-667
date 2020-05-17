@@ -81,7 +81,6 @@ function fillTray(tray) {
 
 
 function calculateScores() {
-  //gameBoard must be updated first
   var columns = getScorableColumns()
   var verticalScore = 0
   columns.forEach((column) => {
@@ -101,6 +100,7 @@ function calculateScores() {
     totalScore = addSelectedPieces()
   }
   console.log("Total Score: ", totalScore)
+  return totalScore
 }
 
 
@@ -201,38 +201,170 @@ function getTileFromGameBoard(tid) {
 
 
 function validatePiecePlacement() {
-  //gameBoard must be updated so this logic will work
-  //Check if the placed word is:
-  //Connected to itself
-  //Attached to an already existing tile
-  //All words attached to a letter in the placed word are actually words
+  return (isConnectedToBoard() && (isValidHorizontalPlacement() || isValidVerticalPlacement()))
   //Use Oxford api for this
 }
+
+
+function getTileFromId(pieceId) {
+  for(var i = 0; i < gameBoard.length; i++) {
+    for(var j = 0; j < gameBoard[0].length; j++) {
+      if(gameBoard[i][j] != null) {
+        if(gameBoard[i][j].id == pieceId) {
+          return gameBoard[i][j]
+        }
+      }
+    }
+  }
+  return null
+}
+
+
+function isConnectedToBoard() {
+  if(isBoardEmpty()) {
+    return isConnectedToMiddle()
+  } else {
+    for(var i = 0; i < selectedPieces.length; i++) {
+      var tile = getTileFromId(selectedPieces[i])
+      if(isConnectedToPiece(tile)) {
+        return true
+      }
+    }
+    return false
+  }
+}
+
+
+function isBoardEmpty() {
+  for(var i = 0; i < gameBoard.length; i++) {
+    for(var j = 0; j < gameBoard.length; j++) {
+      if(gameBoard[i][j] != null) {
+        return false
+      }
+    }
+  }
+  return true
+}
+
+
+function isConnectedToMiddle() {
+  var columns = getScorableColumns()
+  for(var i = 0; i < columns.length; i++) {
+    if(Number(columns[i][0].yCoordinate) == 7) {
+      for(var j = 0; j < columns[i].length; j++) {
+        if(Number(columns[i][j].xCoordinate) == 7) {
+          return true
+        }
+      }
+    }
+  }
+  var rows = getScorableRows()
+  for(var i = 0; i < rows.length; i++) {
+    if(Number(rows[i][0].xCoordinate) == 7) {
+      for(var j = 0; j < rows[i].length; j++) {
+        if(Number(rows[i][j].yCoordinate) == 7) {
+          return true
+        }
+      }
+    }
+  }
+  return false
+}
+
+
+function isConnectedToPiece(placement) {
+  var x = Number(placement.xCoordinate)
+  var y = Number(placement.yCoordinate)
+
+  if(x + 1 < 16 && gameBoard[x + 1][y] != null && !selectedPieces.includes(gameBoard[x + 1][y].id)) {
+    return true
+  }
+  if(x - 1 > -1 && gameBoard[x - 1][y] != null && !selectedPieces.includes(gameBoard[x - 1][y].id)) {
+    return true
+  }
+  if(y + 1 < 16 && gameBoard[x][y + 1] != null && !selectedPieces.includes(gameBoard[x][y + 1].id)) {
+    return true
+  }
+  if(y - 1 > -1 && gameBoard[x][y - 1] != null && !selectedPieces.includes(gameBoard[x][y - 1].id)) {
+    return true
+  }
+  return false
+}
+
+
+function isValidHorizontalPlacement() {
+  var horizontalIndex
+  var lowest = 16
+  var highest = 0
+  for(var i = 0; i < selectedPieces.length; i++) {
+    var tile = getTileFromId(selectedPieces[i])
+    if(horizontalIndex == null) {
+      horizontalIndex = tile.xCoordinate
+    }
+    if(tile.yCoordinate < lowest) {
+      lowest = tile.yCoordinate
+    }
+    if(tile.yCoordinate > highest) {
+      highest = tile.yCoordinate
+    }
+    if(horizontalIndex != tile.xCoordinate) {
+      return false
+    }
+  }
+  for(var i = lowest; i < highest; i++) {
+    if(gameBoard[horizontalIndex][i] == null) {
+      return false
+    }
+  }
+  return true
+}
+
+
+function isValidVerticalPlacement() {
+  var verticalIndex
+  var lowest = 16
+  var highest = 0
+  for(var i = 0; i < selectedPieces.length; i++) {
+    var tile = getTileFromId(selectedPieces[i])
+    if(verticalIndex == null) {
+      verticalIndex = tile.yCoordinate
+    }
+    if(tile.xCoordinate < lowest) {
+      lowest = tile.xCoordinate
+    }
+    if(tile.xCoordinate > highest) {
+      highest = tile.xCoordinate
+    }
+    if(verticalIndex != tile.yCoordinate) {
+      return false
+    }
+  }
+  for(var i = lowest; i < highest; i++) {
+    if(gameBoard[i][verticalIndex] == null) {
+      return false
+    }
+  }
+  return true
+}
+
 
 function updateGameState(cell) {
   if(cell.innerHTML === "") {
     if (selectedPiece != -1) {
       placeTile(cell)
-      calculateScores()
+      turnScore = calculateScores()
+      console.log("Is placement valid?")
+      console.log(validatePiecePlacement())
     }
   } else {
     if (selectedPieces.includes(cell.getAttribute('tid'))) {
       replaceToHand(cell)
-      calculateScores()
+      turnScore = calculateScores()
+      console.log("Is placement valid?")
+      console.log(validatePiecePlacement())
     }
   }
 }
-
-
-function updateScore(letter, isIncreasing) {
-  if(isIncreasing) {
-    turnScore = turnScore + scores[letter]
-  } else {
-    turnScore = turnScore - scores[letter]
-  }
-  console.log("Turn Score: ", turnScore)
-}
-
 
 function placeTile(cell) {
   cell.innerHTML = selectedPiece.letter
