@@ -102,6 +102,13 @@ function calculateScores() {
   document.getElementById("score").innerHTML = "Score: " + totalScore;
 }
 
+// function for button
+function submitTurn() {
+
+  console.log("Something happened");
+
+}
+
 
 function calculateScoreForArray(arr) {
   score = 0
