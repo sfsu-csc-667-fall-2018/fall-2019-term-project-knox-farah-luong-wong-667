@@ -82,6 +82,115 @@ function fillTray(tray) {
 
 function calculateScores() {
   //gameBoard must be updated first
+  var calculatedScore = 0
+  selectedPieces.forEach((pieceId) => {
+    var tile = null
+    gameBoard.forEach((row) => {
+      row.forEach((column) => {
+        if(column != null) {
+          if(column.id == pieceId) {
+            tile = column
+          }
+        }
+      })
+    })
+    calculatedScore = calculatedScore + scores[tile.letter]
+    turnScore = calculatedScore
+  })
+  selectedPieces.forEach((pieceId) => {
+    //Count all orthogonal words
+    var calcPiece = null
+    gameBoard.forEach((row) => {
+      row.forEach((column) => {
+        if(column != null) {
+          if(column.id == pieceId) {
+            calcPiece = column
+          }
+        }
+      })
+    })
+    //const calcPiece = getTileFromGameBoard(pieceId)
+    //Horizontal
+    //Keep going until:
+    //Null
+    //End of line
+    //Piece id is already in selected
+    //(selectedPieces.includes(horizontalStart.id) && horizontalStart.id != piece.id)
+    var horizontalScore = 0
+    var horizontalMultiplier = 1
+    var count = 0
+    var horizontalStart = gameBoard[calcPiece.xCoordinate][count]
+    while(horizontalStart == null && count < 15) {
+      console.log("H Start")
+      count = count + 1
+      horizontalStart = gameBoard[calcPiece.xCoordinate][count]
+    }
+    //count = 0
+    var horizontalEnd = horizontalStart
+    while(horizontalEnd == horizontalStart || horizontalEnd != null && count < 15) {
+      console.log("H End")
+      if(selectedPieces.includes(horizontalEnd.id) && horizontalEnd.id != calcPiece.id) {
+        horizontalMultiplier = 0
+      }
+      horizontalEnd = gameBoard[calcPiece.xCoordinate][count]
+      if(horizontalEnd != null) {
+        console.log("Horizontal letter: ", horizontalEnd.letter)
+        horizontalScore = horizontalScore + scores[horizontalEnd.letter]
+      }
+      count = count + 1
+    }
+    horizontalScore = horizontalScore * horizontalMultiplier
+
+    var verticalScore = 0
+    var verticalMultiplier = 1
+    count = 0
+    var verticalStart = gameBoard[count][calcPiece.yCoordinate]
+    while(verticalStart == null && count < 15) {
+      console.log("V Start")
+      count = count + 1
+      verticalStart = gameBoard[count][calcPiece.yCoordinate]
+    }
+    //count = 0
+    var verticalEnd = verticalStart
+    while(verticalEnd == verticalStart || verticalEnd != null && count < 15) {
+      console.log("V End")
+      if(selectedPieces.includes(verticalEnd.id) && verticalEnd.id != calcPiece.id) {
+        verticalMultiplier = 0
+      }
+      verticalEnd = gameBoard[count][calcPiece.yCoordinate]
+      if(verticalEnd != null) {
+        verticalScore = verticalScore + scores[verticalEnd.letter]
+      }
+      count = count + 1
+    }
+    verticalScore = verticalScore * verticalMultiplier
+    console.log("Letter: ", calcPiece.letter)
+    console.log("HorizontalScore: ", horizontalScore)
+    console.log("VerticalScore: ", verticalScore)
+    console.log("CalculatedScore: ", calculatedScore)
+    if(horizontalScore == scores[calcPiece.letter]) {
+      horizontalScore = 0
+    }
+    if(verticalScore == scores[calcPiece.letter]) {
+      verticalScore = 0
+    }
+    turnScore = turnScore + horizontalScore + verticalScore
+    console.log("Turn Score: ", turnScore)
+  })
+}
+
+
+function getTileFromGameBoard(tid) {
+  gameBoard.forEach((row) => {
+    row.forEach((column) => {
+      if(column != null) {
+        if(column.id == tid) {
+          return column
+        }
+      }
+    })
+  })
+  return null
 }
 
 
@@ -98,11 +207,13 @@ function updateGameState(cell) {
   if(cell.innerHTML === "") {
     if (selectedPiece != -1) {
       placeTile(cell)
-      updateScore(cell.innerHTML, true)
+      calculateScores()
+      //updateScore(cell.innerHTML, true)
     }
   } else {
     if (selectedPieces.includes(cell.getAttribute('tid'))) {
-      updateScore(cell.innerHTML, false)
+      //updateScore(cell.innerHTML, false)
+      calculateScores()
       replaceToHand(cell)
     }
   }
