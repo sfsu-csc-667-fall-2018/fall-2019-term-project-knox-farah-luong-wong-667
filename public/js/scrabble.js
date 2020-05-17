@@ -112,7 +112,7 @@ function submitTurn() {
   //The tiles that have changed need to be updated in the Tile table
   console.log(gameMetadata.UserId)
   console.log(gameData.UserId)
-  if(validatePiecePlacement && checkIfWordsAreValid() && gameMetadata.UserId == gameData.UserId) {
+  if(validatePiecePlacement() && checkIfWordsAreValid() && gameMetadata.UserId == gameData.UserId) {
     gameData.playerScore = turnScore
     var updatedTiles = []
     for(var i = 0; i < playerHand.length; i++) {
@@ -330,7 +330,9 @@ function getTileFromId(pieceId) {
 
 
 function isConnectedToBoard() {
+  console.log(isBoardEmpty())
   if (isBoardEmpty()) {
+    console.log("Is connected to middle: " + isConnectedToMiddle())
     return isConnectedToMiddle()
   } else {
     for (var i = 0; i < selectedPieces.length; i++) {
@@ -346,8 +348,8 @@ function isConnectedToBoard() {
 
 function isBoardEmpty() {
   for (var i = 0; i < gameBoard.length; i++) {
-    for (var j = 0; j < gameBoard.length; j++) {
-      if (gameBoard[i][j] != null) {
+    for (var j = 0; j < gameBoard[i].length; j++) {
+      if (gameBoard[i][j] != null && !selectedPieces.includes(gameBoard[i][j].id)) {
         return false
       }
     }
