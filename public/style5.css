@@ -11,7 +11,6 @@
 body {
   font-family: Montserrat;
   user-select: none;
-  /*   Required for scrolling - https://stackoverflow.com/questions/5791886/jquery-draggable-shows-helper-in-wrong-place-after-page-scrolled */
   overflow: auto;
 }
 #bo {
@@ -45,7 +44,6 @@ body {
 
 #wrapper {
   text-align: center;
-/*   border: 1px solid red; */
 }
 
 h1 {
@@ -167,7 +165,6 @@ h1:hover {
 
 #letterContainer {
   width: calc( 50% - var(--grid-scale) * 0.51vw);
-/*   display: inline-block; */
 }
 #letterContainer hr {
   width: 50%;
@@ -234,12 +231,9 @@ h1:hover {
   font-size: calc(var(--header-height) / 3);
   height: 0%;
   width: 0%;
-/*   margin-left: -5%; */
   font-weight: bold;
 }
-#undoText {
-/*   margin-left: 5%; */
-}
+
 #undoBG, #dropBG{
   width: 80%;
   height: 80%;
@@ -253,4 +247,3 @@ h1:hover {
   background: url("https://image.flaticon.com/icons/svg/364/364330.svg") no-repeat 0% 0%/100%;
 }
 #undo:active, #drop:active {	top: calc(1em + 2px); }
-/* #undo:focus, #drop:focus {	outline: none; } */
