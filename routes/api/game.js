@@ -101,6 +101,48 @@ router.get('/fillPlayerHand', (request, response, next) => {
   })
 })
 
+router.get('/assignAllTiles', (request, response, next) => {
+  Tile.findAll({
+    where: {
+      GameId: request.body.gid,
+      UserId: null
+    }
+  }).then((gameResult) => {
+    gameResult.forEach((tile) => {
+      tile.update({
+        UserId: request.body.UserId
+      })
+    }).then(_ => {
+      Tile.findOne({
+        where: {
+          GameId: request.body.gid,
+          UserId: null
+        }
+      }).then((result) => {
+        console.log("Game Over Result:")
+        console.log(result)
+        response.send(result)
+      })
+    })
+  })
+})
+
+router.post('/setIsWon', (request, response, next) => {
+  Game.findAll()
+  .then((games) => {
+    games.forEach((game) => {
+      Game.update({
+        isWon: false
+      }, {
+        where: {}
+      })
+    }).then((results) => {
+      console.log(results)
+      response.json(results)
+    })
+  })
+})
+
 //Gets all the tiles in a given game that are assigned to a given player that haven't been placed yet
 //Body: 'gid': game id, 'uid': user id
 router.get('/getPlayerHand', (request, response, next) => {
@@ -217,6 +259,54 @@ router.post('/updateActivePlayer', (request, response, next) => {
   })
 })
 
+router.post('/createSmall', (request, response, next) => {
+  var pieceBag = {
+    'A': 2,
+    'C': 2,
+    'D': 2,
+    'E': 2,
+    'F': 2,
+    'G': 2,
+    'H': 2,
+    'I': 2,
+    'L': 2,
+    'M': 2,
+    'N': 2,
+    'O': 2,
+    'P': 2,
+    'R': 2,
+    'S': 2,
+    'T': 2,
+    'U': 2,
+    'Y': 2
+  }
+  Game.create({
+    UserId: request.session.uid
+  })
+  .then((newgame) => {
+    request.session.gid = newgame.id
+    UserGame.create({
+      UserId: newgame.UserId,
+      GameId: newgame.id,
+      playerScore: 0
+    }).then((usergame) => {
+      console.log("UserGame:")
+      console.log(usergame)
+      var promises = []
+      for (var key in pieceBag) {
+        for(let i = 0; i < pieceBag[key]; i++) {
+          var newPromise = Tile.create({'letter':key, 'GameId':usergame.GameId});
+          promises.push(newPromise);
+        }
+      }
+      Promise.all(promises)
+      .then((results) => {
+        response.redirect('/api/game/fillPlayerHand')
+      })
+    })
+  })
+});
+
 //Create a game, requires a user to be logged in
 //Body: N/A
 router.post('/create', (request, response, next) => {
@@ -246,8 +336,7 @@ router.post('/create', (request, response, next) => {
     'W': 2,
     'X': 1,
     'Y': 2,
-    'Z': 1,
-    ' ': 2
+    'Z': 1
   }
   Game.create({
     UserId: request.session.uid

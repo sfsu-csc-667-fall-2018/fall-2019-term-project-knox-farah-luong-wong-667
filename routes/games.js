@@ -67,7 +67,20 @@ router.get("/", (request, response, next) => {
             },
             include: User
           }).then((gameResult) => {
-            response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult, gameMetadata: gameResult })
+            Tile.findAll({
+              where: {
+                GameId: request.session.gid,
+                UserId: null
+              }
+            }).then((tileBagResults) => {
+              gameResult.update({
+                isWon: (tileBagResults == undefined)
+              }).then((finalResults) => {
+                console.log("Final Results:")
+                console.log(finalResults)
+                response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult, gameMetadata: gameResult })
+              })
+            })
           })
         })
       })

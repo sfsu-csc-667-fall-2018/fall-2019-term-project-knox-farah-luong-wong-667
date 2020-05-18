@@ -1,6 +1,9 @@
 const container = document.getElementById("con");
 const trayContainer = document.getElementById("gametray");
 const invalidWordLabel = document.getElementById("invalidWord");
+const gameOverLabel = document.getElementById("gameOver");
+const turnSubmittedLabel = document.getElementById("turnSubmitted");
+turnSubmittedLabel.innerHTML = ""
 invalidWordLabel.style.color = "red"
 invalidWordLabel.innerHTML = ""
 var selectedPieces = []
@@ -12,7 +15,6 @@ var turnScore = 0
 
 
 const scores = {
-  ' ': 0,
   'A': 1,
   'E': 1,
   'I': 1,
@@ -116,8 +118,16 @@ function submitTurn() {
   //The tiles that have changed need to be updated in the Tile table
   console.log(gameMetadata.UserId)
   console.log(gameData.UserId)
-  if(validatePiecePlacement() && checkIfWordsAreValid() && gameMetadata.UserId == gameData.UserId) {
-    gameData.playerScore = turnScore
+  const isCurrentTurn = gameMetadata.UserId == gameData.UserId
+  if(!isCurrentTurn) {
+    turnSubmittedLabel.innerHTML = "It's not your turn!"
+  }
+  if(isGameOver) {
+    turnSubmittedLabel.innerHTML = "Game is over!"
+  }
+  if(validatePiecePlacement() && checkIfWordsAreValid() && isCurrentTurn && !isGameOver) {
+    turnSubmittedLabel.innerHTML = "Turn submitted!"
+    gameData.playerScore = gameData.playerScore + turnScore
     var updatedTiles = []
     for(var i = 0; i < playerHand.length; i++) {
       if(selectedPieces.includes(playerHand[i].id)) {
@@ -552,7 +562,15 @@ gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
 gameData = JSON.parse(document.currentScript.getAttribute('gameData'))
 gameMetadata = JSON.parse(document.currentScript.getAttribute('gameMetadata'))
 const turnLabel = document.getElementById("playerTurn").innerHTML = "Current Turn: " + gameMetadata.User.username;
-console.log("Player Score: ", gameData.playerScore)
+const isGameOver = gameMetadata.isWon
+if(gameMetadata.isWon == false) {
+  gameOverLabel.innerHTML = "Game is not over"
+} else {
+  gameOverLabel.innerHTML = "Game Over!"
+}
+document.getElementById("totalScore").innerHTML = "Total Score: " + gameData.playerScore;
+document.getElementById("score").innerHTML = "Turn Score: " + 0;
+
 fillTable(gameBoard);
 fillTray(playerHand);
 

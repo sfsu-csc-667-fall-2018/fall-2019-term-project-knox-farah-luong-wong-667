@@ -15,4 +15,12 @@ router.get("/login", (request, response, next) => {
   response.render("unauthenticated/login", { title: "Login page" });
 });
 
+router.get("/logout", (request, response, next) => {
+  request.session.uid = null
+  request.session.gid = null
+  request.session.username = null
+  request.session.email = null
+  response.render("index", { title: "Express"})
+})
+
 module.exports = router;

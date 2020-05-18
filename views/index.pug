@@ -11,15 +11,16 @@ block content
                   br
                   title=title
                   hr
-                  a(href="/lobby"): button.h-50.w-100.btn.btn-info(type="button") Lobby page
+                  a(href="/lobby"): button.w-100.btn.btn-info(type="button") Lobby page
+                  a(href="/users/logout"): button.w-100.btn.btn-info(type="button") Log Out
                 else
                   h1.text-center.text-primary Scrabble With Friends
                   hr 
                   h3.text-center.text-secondary Sign In To Play!!
                   br
                   title=title
-                  a(href="users/login"): button.w-100.btn.btn-primary(type="button") Sign In
-                  a(href="users/register"): button.w-100.btn.btn-warning(type="button") Register
+                  a(href="/users/login"): button.w-100.btn.btn-primary(type="button") Sign In
+                  a(href="/users/register"): button.w-100.btn.btn-warning(type="button") Register
           if username != undefined
             #home-column.col-md-6
               #home-box.col-md-12

@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     UserId: {
       type: DataTypes.UUID
+    },
+    isWon: {
+      type: DataTypes.BOOLEAN
     }
   }, {});
   Game.associate = function(models) {
