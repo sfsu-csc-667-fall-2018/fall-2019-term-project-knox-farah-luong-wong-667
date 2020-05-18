@@ -7,6 +7,7 @@ const Game = models["Game"];
 const User = models["User"];
 const UserGame = models["UserGame"];
 const Tile = models["Tile"];
+const GameMessage = models["GameMessage"];
 
 router.get('/', (request, response, next) => {
   response.render('game', { title: 'Gamepage' });
@@ -365,19 +366,31 @@ router.post('/create', (request, response, next) => {
   })
 });
 
-router.post("/submitTurn", (request, response, next) => {
-  console.log("Request received!")
-  console.log(request.session.uid)
-  console.log(request.session.gid)
-  console.log(request.body.playerScore)
-  response.send("Okay!")
+
+
+router.post("/createGameMessage/", (request, response, next) => {
+  GameMessage.create({
+      UserId: request.body.uid,
+      GameId: request.body.gid,
+      body: request.body.messageBody
+    })
+      .then((data) => {
+        console.log(data)
+        response.json(data)
+        //response.redirect('/authenticated/game');
+      })
+      .catch((err) => {
+        response.send("Error: ", err)
+      })
 })
 
-router.post('/submitTiles', (request, response, next) => {
-  console.log("Submitting tiles")
-  console.log(request.body.xCoordinate)
-  console.log(request.body.yCoordinate)
-  console.log(request.body.id)
+router.get("/getGameMessages", function (request, response, next) {
+  GameMessage.findAll({
+    include: [User, Game]
+  })
+  .then((results) => {
+    response.json(results)
+  })
 })
 
 router.post("/nextPlayer", (request, response, next) => {
