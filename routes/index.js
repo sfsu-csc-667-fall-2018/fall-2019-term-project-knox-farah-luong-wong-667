@@ -4,6 +4,7 @@ const associations = require("../models/associations");
 const Tile = associations["Tile"];
 const Game = associations["Game"];
 const UserGame = associations["UserGame"];
+const User = associations["User"];
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -21,7 +22,8 @@ router.get("/", function (req, res, next) {
       Game.findAll({
         where: {
           id: myGameIds
-        }
+        },
+        include: User
       }).then((myGames) => {
         res.render("index", {title: "Express", username: req.session.username, myGames: myGames})
       })

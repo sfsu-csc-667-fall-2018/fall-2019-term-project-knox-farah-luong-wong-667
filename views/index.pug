@@ -27,7 +27,7 @@ block content
                 div.justify-content-around
                   h1.text-center.text-black #{username}'s Games
                   for game in myGames
-                    b.col-md-8 #{game.id}
+                    b.col-md-8 #{game.User.username}'s Turn - #{game.id}
                     div
                       form.col-md-4(method='POST' action='/api/game/join')
                         input.w-100(type='hidden' id='gid' name='gid' value=game.id)

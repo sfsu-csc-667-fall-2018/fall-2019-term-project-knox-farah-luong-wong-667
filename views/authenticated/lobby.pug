@@ -30,7 +30,7 @@ block content
               #lobby-box-scroll
                   div.row.justify-content-around
                     for game in availableGames
-                      b.col-md-8 #{game.id}
+                      b.col-md-8 #{game.UserId}
                       div
                         form.col-md-4(method='POST' action='/api/game/join')
                           input.w-100(type='hidden' id='gid' name='gid' value=game.id)
