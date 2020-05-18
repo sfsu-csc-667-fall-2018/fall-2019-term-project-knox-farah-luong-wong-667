@@ -64,7 +64,8 @@ router.get("/", (request, response, next) => {
           Game.findOne({
             where: {
               id: request.session.gid
-            }
+            },
+            include: User
           }).then((gameResult) => {
             response.render("../views/authenticated/game", { username: request.session.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult, gameMetadata: gameResult })
           })
