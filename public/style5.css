@@ -101,6 +101,21 @@ h1:hover {
   background-color: white;
   box-shadow: calc(var(--grid-scale) * 1vw / 100 ) calc(var(--grid-scale) * 1vw / 100 ) #ddd;
 }
+
+.tray-item{
+  display: inline-block;
+  text-align: center;
+  background-color: #d9b382;
+  width: 60px;
+  height: 60px;
+  border: 5px solid;
+  border-color: #eee;
+}
+
+.tray-item:hover{
+  box-shadow: 0 0 15px #eee inset;
+}
+
 .grid-item {
   text-align: center;
   background-color: #d9b382;

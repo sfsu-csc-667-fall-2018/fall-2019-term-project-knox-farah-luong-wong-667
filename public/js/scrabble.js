@@ -1,5 +1,8 @@
 const container = document.getElementById("con");
-const trayContainer = document.getElementById("tray");
+const trayContainer = document.getElementById("gametray");
+const invalidWordLabel = document.getElementById("invalidWord");
+invalidWordLabel.style.color = "red"
+invalidWordLabel.innerHTML = ""
 var selectedPieces = []
 var playerHand = -1
 var gameBoard = -1
@@ -61,7 +64,7 @@ function fillTable(grid) {
 
 function fillTray(tray) {
   for (var i = 0; i < tray.length; i++) {
-    let cell = document.createElement("div")
+    let cell = document.createElement("tile")
     cell.innerHTML = tray[i].letter
     cell.setAttribute("tid", tray[i].id)
     cell.onclick = function () {
@@ -75,7 +78,7 @@ function fillTray(tray) {
         }
       })
     }
-    trayContainer.appendChild(cell).classname += "grid-item";
+    trayContainer.appendChild(cell).className += " tray-item";
   }
 }
 
@@ -248,7 +251,15 @@ function validatePiecePlacement() {
   //Only use sparingly because we have a 1000 request limit with a free account
   //When we have a submit button we will call this on submit pressed to limit usage
   //checkIfWordsAreValid()
-  return (isConnectedToBoard() && (isValidHorizontalPlacement() || isValidVerticalPlacement()))
+  var valid = (isConnectedToBoard() && (isValidHorizontalPlacement() || isValidVerticalPlacement()))
+  if(valid) {
+    document.getElementById("valid").innerHTML = "Valid Placement";
+    document.getElementById("valid").style.color = "green"
+  } else {
+    document.getElementById("valid").innerHTML = "Invalid Placement";
+    document.getElementById("valid").style.color = "red"
+  }
+  return valid
 }
 
 
@@ -280,6 +291,11 @@ function isWordValid(word) {
   var responseJson = JSON.parse(xmlHttp.responseText)
   for (var i = 0; i < responseJson.length; i++) {
     if (responseJson[i].meta == undefined) {
+      if (invalidWordLabel.innerHTML == "") {
+        invalidWordLabel.innerHTML = "Invalid Word: " + word
+      } else {
+        invalidWordLabel.innerHTML = invalidWordLabel.innerHTML + ", " + word
+      }
       console.log("No definition for " + word)
       return false
     }
@@ -330,9 +346,7 @@ function getTileFromId(pieceId) {
 
 
 function isConnectedToBoard() {
-  console.log(isBoardEmpty())
   if (isBoardEmpty()) {
-    console.log("Is connected to middle: " + isConnectedToMiddle())
     return isConnectedToMiddle()
   } else {
     for (var i = 0; i < selectedPieces.length; i++) {
@@ -536,6 +550,7 @@ playerHand = JSON.parse(document.currentScript.getAttribute('playerHand'))
 gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
 gameData = JSON.parse(document.currentScript.getAttribute('gameData'))
 gameMetadata = JSON.parse(document.currentScript.getAttribute('gameMetadata'))
+const turnLabel = document.getElementById("playerTurn").innerHTML = "Current Turn: " + gameMetadata.User.username;
 console.log("Player Score: ", gameData.playerScore)
 fillTable(gameBoard);
 fillTray(playerHand);

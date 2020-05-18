@@ -8,6 +8,7 @@ block content
     .container
       h1= title
       p Yo Welcome To Scrabble!! #{username}
+      #playerTurn
       #Game-row.row.justify-content-left.align-items-center
         #Game-column.col-md-6
             #Game-box.col-md-12
@@ -19,7 +20,7 @@ block content
       #Game-row.row.justify-content-left.align-items-center
         #slider
         #wrapper
-        #tray
+        #gametray
         
     #playerOneScoreContainer
       h3 Player One
@@ -27,4 +28,6 @@ block content
       #score
       br
       button( onclick= "submitTurn('#{}')") Submit
+      #valid
+      #invalidWord
 
