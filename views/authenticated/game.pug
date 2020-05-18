@@ -28,13 +28,18 @@ block content
       #totalScore.text-weight-bold
       #score.text-weight-bold
       br
-      h3 #{opponentUsername}
+      button( onclick= "submitTurn('#{}')") Submit
+      br
+      br
+      h3 <em> #{opponentUsername}</em> 
       hr
       #opponentScore
       br
-      button( onclick= "submitTurn('#{}')") Submit
       #valid
       #invalidWord
       #turnSubmitted
+      br
+      br
+      br
       #gameOver
 
