@@ -116,9 +116,7 @@ function submitTurn() {
   //Score must be updated
   //Next player should become the active player
   //The tiles that have changed need to be updated in the Tile table
-  console.log(gameMetadata.UserId)
-  console.log(gameData.UserId)
-  const isCurrentTurn = gameMetadata.UserId == gameData.UserId
+  const isCurrentTurn = gameMetadata.UserId == userId
   if(!isCurrentTurn) {
     turnSubmittedLabel.innerHTML = "It's not your turn!"
   }
@@ -127,7 +125,7 @@ function submitTurn() {
   }
   if(validatePiecePlacement() && checkIfWordsAreValid() && isCurrentTurn && !isGameOver) {
     turnSubmittedLabel.innerHTML = "Turn submitted!"
-    gameData.playerScore = gameData.playerScore + turnScore
+    userData.playerScore = userData.playerScore + turnScore
     var updatedTiles = []
     for(var i = 0; i < playerHand.length; i++) {
       if(selectedPieces.includes(playerHand[i].id)) {
@@ -137,7 +135,7 @@ function submitTurn() {
     //Add to score
     fetch('/api/game/addToPlayerScore', {
         method: 'POST',
-        body: JSON.stringify(gameData),
+        body: JSON.stringify(userData),
         headers: {
             'Content-type': 'application/json; charset=UTF-8'
         }
@@ -559,7 +557,12 @@ function changeColorOfElementWithTid(tid, color) {
 
 playerHand = JSON.parse(document.currentScript.getAttribute('playerHand'))
 gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
-gameData = JSON.parse(document.currentScript.getAttribute('gameData'))
+console.log(document.currentScript.getAttribute('gameData'))
+const userData = JSON.parse(document.currentScript.getAttribute('gameData'))
+const opponentData = JSON.parse(document.currentScript.getAttribute('opponentGameData'))
+const userId = document.currentScript.getAttribute('uid')
+console.log("User Id:")
+console.log(userId)
 gameMetadata = JSON.parse(document.currentScript.getAttribute('gameMetadata'))
 const turnLabel = document.getElementById("playerTurn").innerHTML = "Current Turn: " + gameMetadata.User.username;
 const isGameOver = gameMetadata.isWon
@@ -568,8 +571,9 @@ if(gameMetadata.isWon == false) {
 } else {
   gameOverLabel.innerHTML = "Game Over!"
 }
-document.getElementById("totalScore").innerHTML = "Total Score: " + gameData.playerScore;
+document.getElementById("totalScore").innerHTML = "Total Score: " + userData.playerScore;
 document.getElementById("score").innerHTML = "Turn Score: " + 0;
+document.getElementById("opponentScore").innerHTML = "Total Score: " + opponentData.playerScore;
 
 fillTable(gameBoard);
 fillTray(playerHand);
