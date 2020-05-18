@@ -23,7 +23,7 @@ block content
               form(method='POST' action='/api/global-message/create')
                   //- label(for='messageBody') #{username}
                   input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
-                  button.w-100.btn.btn-success(type='submit') Submit
+                  button.w-100.btn.btn-primary(type='submit') Send
           
           #lobby-column.col-md-6
             #lobby-box.col-md-12
@@ -38,6 +38,3 @@ block content
             div
               form(method='POST' action='/api/game/createSmall')
                 button.w-100.btn.btn-success(type='submit') Create Game
-
-
-          //- a(href = "/games") Games

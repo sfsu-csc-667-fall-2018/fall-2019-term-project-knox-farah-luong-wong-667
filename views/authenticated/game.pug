@@ -7,7 +7,7 @@ block content
   #Game
     .container
       h1= title
-      p Yo Welcome To Scrabble!! #{username}
+      h1 Welcome To Scrabble!! <b> #{username}</b>
       #playerTurn
       #Game-row.row.justify-content-left.align-items-center
         #Game-column.col-md-6
@@ -23,10 +23,10 @@ block content
         #gametray
         
     #playerOneScoreContainer
-      h3 Player One
+      h3 <b> #{username}</b>
       hr
-      #totalScore
-      #score
+      #totalScore.text-weight-bold
+      #score.text-weight-bold
       br
       button( onclick= "submitTurn('#{}')") Submit
       #valid
