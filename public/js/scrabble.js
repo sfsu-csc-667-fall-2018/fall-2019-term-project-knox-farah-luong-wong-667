@@ -67,7 +67,7 @@ function fillTray(tray) {
     let cell = document.createElement("tile")
     cell.innerHTML = tray[i].letter
     cell.setAttribute("tid", tray[i].id)
-    cell.setAttribute("class","draggable")
+    //cell.setAttribute("class","draggable")
     cell.onclick = function () {
       playerHand.forEach((tile) => {
         if (tile.id == cell.getAttribute('tid') && !selectedPieces.includes(tile.id)) {
