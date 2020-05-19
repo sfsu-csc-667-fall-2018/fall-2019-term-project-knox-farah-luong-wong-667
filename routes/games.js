@@ -6,6 +6,7 @@ const User = models["User"];
 const Game = models["Game"];
 const Tile = models["Tile"];
 const UserGame = models["UserGame"];
+const GameMessage = models["GameMessage"];
 
 router.get("/", (request, response, next) => {
   Tile.findAll({
@@ -84,10 +85,17 @@ router.get("/", (request, response, next) => {
                     UserId: null
                   }
                 }).then((tileBagResults) => {
-                  gameResult.update({
-                    isWon: (tileBagResults == undefined)
-                  }).then((finalResults) => {
-                    response.render("../views/authenticated/game", { uid: request.session.uid, username: request.session.username, opponentUsername: opponentUserResult.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult, opponentGameData: opponentGameResults, gameMetadata: gameResult })
+                  GameMessage.findAll({
+                    where: {
+                      GameId: request.session.gid
+                    },
+                    include: [User, Game]
+                  }).then((gameMessages) => {
+                    gameResult.update({
+                      isWon: (tileBagResults == undefined)
+                    }).then((finalResults) => {
+                      response.render("../views/authenticated/game", { uid: request.session.uid, username: request.session.username, gameMessages: gameMessages, opponentUsername: opponentUserResult.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult, opponentGameData: opponentGameResults, gameMetadata: gameResult })
+                    })
                   })
                 })
               })

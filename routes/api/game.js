@@ -367,17 +367,27 @@ router.post('/create', (request, response, next) => {
 });
 
 
+router.post('/getGameMessagesByGid', (request, response, next) => {
+  GameMessage.findAll({
+    where: {
+      GameId: request.session.gid
+    },
+    include: [User, game]
+  }).then((results) => {
+    response.json(results)
+  })
+})
+
 
 router.post("/createGameMessage/", (request, response, next) => {
   GameMessage.create({
-      UserId: request.body.uid,
-      GameId: request.body.gid,
+      UserId: request.session.uid,
+      GameId: request.session.gid,
       body: request.body.messageBody
     })
       .then((data) => {
         console.log(data)
-        response.json(data)
-        //response.redirect('/authenticated/game');
+        response.redirect('/games');
       })
       .catch((err) => {
         response.send("Error: ", err)
