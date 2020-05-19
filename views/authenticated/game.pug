@@ -42,4 +42,19 @@ block content
       br
       br
       #gameOver
+    
+    #lobby-box.col-md-12
+      #lobby-box-scroll
+        div#row.justify-content-end
+          for result in gameMessages
+            div#row
+              if result.User != null
+                b.col-md-6 #{result.User.username}
+                div.col-md-6
+                  p #{result.body}
+            
+    div
+      form(method='POST' action='/api/game/createGameMessage')
+        input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
+        button.w-100.btn.btn-primary(type='submit') Send
 

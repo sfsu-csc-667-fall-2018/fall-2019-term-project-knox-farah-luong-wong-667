@@ -10,10 +10,17 @@ const UserGameModel = require("./usergame");
 const UserGame = UserGameModel(db, Sequelize);
 const TileModel = require("./tile");
 const Tile = TileModel(db, Sequelize);
+const GameMessageModel = require("./gamemessage");
+const GameMessage = GameMessageModel(db, Sequelize);
 
 //Add Associations here
 GlobalMessage.belongsTo(User);
 User.hasMany(GlobalMessage);
+
+GameMessage.belongsTo(User);
+User.hasMany(GameMessage);
+GameMessage.belongsTo(Game);
+Game.hasMany(GameMessage);
 
 Game.belongsTo(User);
 User.hasMany(Game);
@@ -32,5 +39,6 @@ container['User'] = User
 container['Game'] = Game
 container['UserGame'] = UserGame
 container['Tile'] = Tile
+container['GameMessage'] = GameMessage
 
 module.exports = container
