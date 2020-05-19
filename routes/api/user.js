@@ -28,7 +28,6 @@ router.post("/create", function (request, response, next) {
                 sess.email = data.email;
                 sess.username = data.username;
                 sess.uid = data.id;
-                console.log("Sesson: ", sess);
                 response.redirect('/');
             }
         });
@@ -57,7 +56,6 @@ router.post('/verify', function (request, response, next) {
                     sess.email = user.email;
                     sess.username = user.username;
                     sess.uid = user.id;
-                    console.log("Session: ", sess);
                     response.redirect('/');
                 } else {
                     response.send('Incorrect password');

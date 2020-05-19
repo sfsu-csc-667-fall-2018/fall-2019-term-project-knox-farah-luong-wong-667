@@ -7,7 +7,6 @@ const User = models["User"];
 const UserGame = models["UserGame"];
 const Game = models["Game"];
 
-/* GET home page. */
 router.get("/", (request, response, next) => {
   GlobalMessage.findAll({
     include: {
@@ -30,7 +29,8 @@ router.get("/", (request, response, next) => {
         Game.findAll({
           where: {
             id: availableGameIds
-          }
+          },
+          include: User
         }).then((availableGamesResults) => {
           response.render("authenticated/lobby", { title: "lobby page", messages: results, username: request.session.username, availableGames: availableGamesResults})
         })

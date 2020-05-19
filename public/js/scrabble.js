@@ -69,7 +69,6 @@ function fillTray(tray) {
     let cell = document.createElement("tile")
     cell.innerHTML = tray[i].letter
     cell.setAttribute("tid", tray[i].id)
-    //cell.setAttribute("class","draggable")
     cell.onclick = function () {
       playerHand.forEach((tile) => {
         if (tile.id == cell.getAttribute('tid') && !selectedPieces.includes(tile.id)) {
@@ -109,13 +108,8 @@ function calculateScores() {
   return totalScore
 }
 
-// function for button
-function submitTurn() {
 
-  //To submit a turn:
-  //Score must be updated
-  //Next player should become the active player
-  //The tiles that have changed need to be updated in the Tile table
+function submitTurn() {
   const isCurrentTurn = gameMetadata.UserId == userId
   if(!isCurrentTurn) {
     turnSubmittedLabel.innerHTML = "It's not your turn!"
@@ -132,7 +126,6 @@ function submitTurn() {
         updatedTiles.push(playerHand[i])
       }
     }
-    //Add to score
     fetch('/api/game/addToPlayerScore', {
         method: 'POST',
         body: JSON.stringify(userData),
@@ -256,10 +249,6 @@ function getTileFromGameBoard(tid) {
 
 
 function validatePiecePlacement() {
-  //Uncomment this line to see output about valid words in console
-  //Only use sparingly because we have a 1000 request limit with a free account
-  //When we have a submit button we will call this on submit pressed to limit usage
-  //checkIfWordsAreValid()
   var valid = (isConnectedToBoard() && (isValidHorizontalPlacement() || isValidVerticalPlacement()))
   if(valid) {
     document.getElementById("valid").innerHTML = "Valid Placement";
@@ -281,12 +270,8 @@ function checkIfWordsAreValid() {
         allWordsValid = false
       }
     }
-    console.log("All Words Valid?")
-    console.log(allWordsValid)
     return allWordsValid
   } else {
-    console.log("All Words Valid?")
-    console.log("false")
     return false
   }
 }
@@ -305,11 +290,9 @@ function isWordValid(word) {
       } else {
         invalidWordLabel.innerHTML = invalidWordLabel.innerHTML + ", " + word
       }
-      console.log("No definition for " + word)
       return false
     }
   }
-  console.log("Definitions found for " + word)
   return true
 }
 
@@ -488,16 +471,11 @@ function updateGameState(cell) {
       placeTile(cell)
       turnScore = calculateScores()
       var isValid = validatePiecePlacement()
-      console.log("Is placement valid?")
-      console.log(isValid)
     }
   } else {
     if (selectedPieces.includes(cell.getAttribute('tid'))) {
       replaceToHand(cell)
       turnScore = calculateScores()
-      var isValid = validatePiecePlacement()
-      console.log("Is placement valid?")
-      console.log(isValid)
     }
   }
 }
@@ -557,12 +535,9 @@ function changeColorOfElementWithTid(tid, color) {
 
 playerHand = JSON.parse(document.currentScript.getAttribute('playerHand'))
 gameBoard = JSON.parse(document.currentScript.getAttribute('gameBoard'))
-console.log(document.currentScript.getAttribute('gameData'))
 const userData = JSON.parse(document.currentScript.getAttribute('gameData'))
 const opponentData = JSON.parse(document.currentScript.getAttribute('opponentGameData'))
 const userId = document.currentScript.getAttribute('uid')
-console.log("User Id:")
-console.log(userId)
 gameMetadata = JSON.parse(document.currentScript.getAttribute('gameMetadata'))
 const turnLabel = document.getElementById("playerTurn").innerHTML = "Current Turn: " + gameMetadata.User.username;
 const isGameOver = gameMetadata.isWon
@@ -573,7 +548,9 @@ if(gameMetadata.isWon == false) {
 }
 document.getElementById("totalScore").innerHTML = "Total Score: " + userData.playerScore;
 document.getElementById("score").innerHTML = "Turn Score: " + 0;
-document.getElementById("opponentScore").innerHTML = "Total Score: " + opponentData.playerScore;
+if(opponentData != null) {
+  document.getElementById("opponentScore").innerHTML = "Total Score: " + opponentData.playerScore;
+}
 
 fillTable(gameBoard);
 fillTray(playerHand);

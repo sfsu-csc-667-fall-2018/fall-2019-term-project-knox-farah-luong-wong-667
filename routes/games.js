@@ -21,8 +21,6 @@ router.get("/", (request, response, next) => {
     if(result.length < 7) {
       response.redirect("/api/game/fillPlayerHand")
     } else {
-      console.log("Player Hand:")
-      console.log(result)
       Tile.findAll({
         where: {
           GameId: request.session.gid,
@@ -32,8 +30,6 @@ router.get("/", (request, response, next) => {
         }
       })
       .then((gameBoard) => {
-        console.log("Game Board:")
-        console.log(gameBoard)
         var gameArray = [
           new Array(15),
           new Array(15),
@@ -68,9 +64,13 @@ router.get("/", (request, response, next) => {
               ]
             }
           }).then((opponentGameResults) => {
+            var opponentId = null
+            if(opponentGameResults != null) {
+              opponentId = opponentGameResults.UserId
+            }
             User.findOne({
               where: {
-                id: opponentGameResults.UserId
+                id: opponentId
               }
             }).then((opponentUserResult) => {
               Game.findOne({
@@ -94,7 +94,11 @@ router.get("/", (request, response, next) => {
                     gameResult.update({
                       isWon: (tileBagResults == undefined)
                     }).then((finalResults) => {
-                      response.render("../views/authenticated/game", { uid: request.session.uid, username: request.session.username, gameMessages: gameMessages, opponentUsername: opponentUserResult.username, playerHand: result, gameBoard: gameArray, gameData: userGameResult, opponentGameData: opponentGameResults, gameMetadata: gameResult })
+                      var opponentUsername = null
+                      if(opponentUserResult != null) {
+                        opponentUsername = opponentUserResult.username
+                      }
+                      response.render("../views/authenticated/game", { uid: request.session.uid, username: request.session.username, gameMessages: gameMessages, opponentUsername: opponentUsername, playerHand: result, gameBoard: gameArray, gameData: userGameResult, opponentGameData: opponentGameResults, gameMetadata: gameResult })
                     })
                   })
                 })

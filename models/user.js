@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   User.associate = function(models) {
-    // associations can be defined here
     User.hasMany(models.GlobalMessage);
     User.belongsToMany(models.Game, {through: 'UserGame'})
 

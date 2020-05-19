@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   GlobalMessage.associate = function(models) {
-    // associations can be defined here
     GlobalMessage.belongsTo(models.User);
   };
   return GlobalMessage;

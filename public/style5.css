@@ -23,20 +23,16 @@ body {
   z-index: -1;
   border-bottom: 1px ;
 }
-/* width */
 ::-webkit-scrollbar {
   width: 12px;
 }
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1; 
 }
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
   margin: 1px;
 }
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
@@ -192,7 +188,6 @@ h1:hover {
 }
 
 .letter, .obstacle{
-/*   background-color: #c9a372; */
   background-color: 	#FFDEAD;
   color: crimson;
   margin: 0;

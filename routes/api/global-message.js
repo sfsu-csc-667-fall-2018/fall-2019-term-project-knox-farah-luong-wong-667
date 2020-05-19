@@ -12,7 +12,6 @@ router.get("/get/", (request, response, next) => {
         }
     })
         .then((results) => {
-            console.log(results)
             response.json(results)
         })
         .catch((err) => {
@@ -27,7 +26,6 @@ router.post("/create/", (request, response, next) => {
     })
         .then(function (data) {
             if (data) {
-                console.log(data);
                 response.redirect('/lobby');
             }
         })

@@ -21,7 +21,6 @@ block content
             
             div
               form(method='POST' action='/api/global-message/create')
-                  //- label(for='messageBody') #{username}
                   input.w-100(type='text' id='messageBody' placeholder='Send a message' name='messageBody')
                   button.w-100.btn.btn-primary(type='submit') Send
           
@@ -30,11 +29,11 @@ block content
               #lobby-box-scroll
                   div.row.justify-content-around
                     for game in availableGames
-                      b.col-md-8 #{game.UserId}
+                      b.col-md-8 #{game.User.username}'s Game - #{game.id}
                       div
                         form.col-md-4(method='POST' action='/api/game/join')
                           input.w-100(type='hidden' id='gid' name='gid' value=game.id)
                           button.btn.btn-success(type='submit') Join
             div
-              form(method='POST' action='/api/game/createSmall')
+              form(method='POST' action='/api/game/create')
                 button.w-100.btn.btn-success(type='submit') Create Game

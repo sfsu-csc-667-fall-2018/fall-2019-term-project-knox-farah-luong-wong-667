@@ -7,7 +7,6 @@ router.get("/", (request, response) => {
  .then( _ => db.any(`SELECT * FROM test_table`) )
  .then( results => response.json( results ) )
  .catch( error => {
- console.log( error )
  response.json({ error })
  })
 });

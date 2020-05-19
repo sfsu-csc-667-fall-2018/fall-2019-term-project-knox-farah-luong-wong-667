@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   Tile.associate = function(models) {
-    // associations can be defined here
   };
   return Tile;
 };

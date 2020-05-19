@@ -13,7 +13,6 @@ const Tile = TileModel(db, Sequelize);
 const GameMessageModel = require("./gamemessage");
 const GameMessage = GameMessageModel(db, Sequelize);
 
-//Add Associations here
 GlobalMessage.belongsTo(User);
 User.hasMany(GlobalMessage);
 

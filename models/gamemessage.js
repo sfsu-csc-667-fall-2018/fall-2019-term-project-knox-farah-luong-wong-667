@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   GameMessage.associate = function(models) {
-    // associations can be defined here
     GameMessage.belongsTo(models.User);
   };
   return GameMessage;

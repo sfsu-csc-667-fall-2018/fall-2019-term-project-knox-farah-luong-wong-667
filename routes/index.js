@@ -6,7 +6,6 @@ const Game = associations["Game"];
 const UserGame = associations["UserGame"];
 const User = associations["User"];
 
-/* GET home page. */
 router.get("/", function (req, res, next) {
   if(req.session.uid != undefined) {
     UserGame.findAll({
