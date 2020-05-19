@@ -35,7 +35,9 @@ body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     color: blue;
 }
-
+#playerOneScoreContainer h3 b{
+    color:blue
+}
 #score{
     font-weight: bold;
     font-size: 20px;
@@ -62,5 +64,16 @@ body {
     font-size: 25px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     
+}
+
+#playerOneScoreContainer h3 em{
+    color:red;
+}
+
+#opponentScore{
+    font-weight: bold;
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: red;
 }
 
