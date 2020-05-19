@@ -57,6 +57,10 @@ function fillTable(grid) {
         container.appendChild(cell).className += " grid-item";
       } else {
         cell.innerHTML = grid[i][j].letter
+        let number = document.createElement("p");
+        number.className += " little-number";
+        number.innerText = scores[grid[i][j].letter]
+        cell.appendChild(number)
         container.appendChild(cell).className += " grid-item";
       }
     }
@@ -80,6 +84,10 @@ function fillTray(tray) {
         }
       })
     }
+    let number = document.createElement("p");
+    number.className += " little-number";
+    number.innerText = scores[tray[i].letter]
+    cell.appendChild(number)
     trayContainer.appendChild(cell).className += " tray-item";
   }
 }
@@ -482,6 +490,10 @@ function updateGameState(cell) {
 
 function placeTile(cell) {
   cell.innerHTML = selectedPiece.letter
+  let number = document.createElement("p");
+  number.className += " little-number";
+  number.innerText = scores[selectedPiece.letter]
+  cell.appendChild(number)
   selectedPiece.xCoordinate = cell.getAttribute("x")
   selectedPiece.yCoordinate = cell.getAttribute("y")
   selectedPieces.push(selectedPiece.id)
