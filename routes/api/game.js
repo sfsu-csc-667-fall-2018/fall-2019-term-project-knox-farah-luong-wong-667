@@ -488,11 +488,20 @@ router.get('/getUserGames', (request, response, next) => {
 })
 
 
+router.post('/clearGameMessages', (request, response, next) => {
+  GameMessage.destroy({
+    where: {}
+  })
+  .then((result) => {
+    response.json(result)
+  })
+})
+
+
 router.post('/clearGames',(request,response,next) => {
   Game.destroy({
     where: {}
   })
-  .then(function () {})
   .then((result)=>{
     response.json(result)
   });

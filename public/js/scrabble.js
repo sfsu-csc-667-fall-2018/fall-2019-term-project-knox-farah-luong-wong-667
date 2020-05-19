@@ -125,7 +125,10 @@ function submitTurn() {
   if(isGameOver) {
     turnSubmittedLabel.innerHTML = "Game is over!"
   }
-  if(validatePiecePlacement() && checkIfWordsAreValid() && isCurrentTurn && !isGameOver) {
+  if(opponentData == null) {
+    turnSubmittedLabel.innerHTML = "Another user must join!"
+  }
+  if(validatePiecePlacement() && checkIfWordsAreValid() && isCurrentTurn && !isGameOver && opponentData != null) {
     turnSubmittedLabel.innerHTML = "Turn submitted!"
     userData.playerScore = userData.playerScore + turnScore
     var updatedTiles = []
